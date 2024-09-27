@@ -16,9 +16,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.rickandmorty.presentation.character_list.CharacterListScreen
+import com.example.rickandmorty.presentation.character_list.CharacterListViewModel
 
 
 @Composable
@@ -35,7 +38,8 @@ fun BottomNavigationComposable(navController: NavHostController) {
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(homeTab.title) {
-                Text(homeTab.title)
+                val characterListViewModel: CharacterListViewModel = hiltViewModel()
+                CharacterListScreen(characterListViewModel, navController)
             }
             composable(favourites.title) {
                 Text(favourites.title)

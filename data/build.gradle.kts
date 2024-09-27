@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.hiltAndroid)
+    alias(libs.plugins.hilt.android)
     id("kotlin-kapt")
 }
 
@@ -53,4 +53,8 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":domain"))
     implementation(project(":data-source-rest"))
+}
+
+kapt {
+    correctErrorTypes = true
 }

@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.hiltAndroid)
+    alias(libs.plugins.hilt.android)
     id("kotlin-kapt")
 }
 
@@ -73,15 +73,17 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Coil
-    implementation(libs.coil)
-
-    implementation(libs.androidx.material3)
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.gson)
 
     // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.navigation.compose)
+
+    // Coil
+    implementation(libs.coil)
 
     implementation(project(":common"))
     implementation(project(":data"))
