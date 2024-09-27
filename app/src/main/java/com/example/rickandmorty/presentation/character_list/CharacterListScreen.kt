@@ -8,6 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.navigation.NavController
+import com.example.rickandmorty.presentation.bottom_navigation.NavigationItem
 import com.example.rickandmorty.presentation.character_list.ui.CharactersComposable
 
 @Composable
@@ -18,7 +19,7 @@ fun CharacterListScreen(viewModel: CharacterListViewModel, navController: NavCon
     val listState: LazyListState = rememberLazyListState()
 
     CharactersComposable(listState, display.characterList) { character ->
-
+        navController.navigate(NavigationItem.Detail.route + "/${character.id}")
     }
 
     LaunchedEffect(listState) {

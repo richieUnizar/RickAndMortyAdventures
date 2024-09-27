@@ -1,5 +1,8 @@
 package com.example.data_source_rest.di
 
+import com.example.data_source_rest.character.CharacterApiRest
+import com.example.data_source_rest.character.CharacterDataSource
+import com.example.data_source_rest.character.CharacterDataSourceImpl
 import com.example.data_source_rest.characters.CharactersApiRest
 import com.example.data_source_rest.characters.CharactersDataSource
 import com.example.data_source_rest.characters.CharactersDataSourceImpl
@@ -26,15 +29,29 @@ object DataSourceRestModule {
 
     @Provides
     @Singleton
+    fun provideCharacterApiRest(retrofit: Retrofit): CharacterApiRest {
+        return retrofit.create(CharacterApiRest::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideCharactersApiRest(retrofit: Retrofit): CharactersApiRest {
         return retrofit.create(CharactersApiRest::class.java)
     }
 
     @Provides
     @Singleton
+    fun provideCharacterDataSourceImpl(
+        characterApiRest: CharacterApiRest
+    ): CharacterDataSource {
+        return CharacterDataSourceImpl(characterApiRest)
+    }
+
+    @Provides
+    @Singleton
     fun provideCharactersDataSourceImpl(
-        characterApiRest: CharactersApiRest
+        charactersApiRest: CharactersApiRest
     ): CharactersDataSource {
-        return CharactersDataSourceImpl(characterApiRest)
+        return CharactersDataSourceImpl(charactersApiRest)
     }
 }

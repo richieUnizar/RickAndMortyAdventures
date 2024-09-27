@@ -4,13 +4,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.List
-import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -18,8 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.example.rickandmorty.presentation.character_details.CharacterDetailsScreen
 import com.example.rickandmorty.presentation.character_list.CharacterListScreen
 import com.example.rickandmorty.presentation.character_list.CharacterListViewModel
 
@@ -46,6 +45,16 @@ fun BottomNavigationComposable(navController: NavHostController) {
             }
             composable(settingsTab.title) {
                 Text(settingsTab.title)
+            }
+            composable(
+                route = NavigationItem.Detail.route + "/{characterId}",
+                arguments = listOf(
+                    navArgument(name = "characterId") { type = NavType.IntType },
+                )
+            ) { backStackEntry ->
+                val id = backStackEntry.arguments?.getInt("characterId") ?: 1
+
+                CharacterDetailsScreen(id)
             }
         }
     }
