@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.android.jupiter)
     id("kotlin-kapt")
 }
 
@@ -41,6 +42,9 @@ android {
     hilt {
         enableAggregatingTask = false
     }
+    junitPlatform {
+        instrumentationTests.includeExtensions.set(true)
+    }
 }
 
 dependencies {
@@ -62,7 +66,19 @@ dependencies {
     // Coil
     implementation(libs.coil)
 
-    testImplementation(libs.junit)
+    // Mockk
+    androidTestImplementation(libs.mockk.android)
+    testImplementation(libs.mockk)
+    // JUnit 5
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.junit.jupiter.params)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    // Jetpack Compose Test
+    androidTestImplementation(libs.android.compose.ui.test)
+    debugImplementation(libs.android.compose.ui.test.manifest)
+    // Coroutines test library
+    testImplementation(libs.corroutine.test)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 

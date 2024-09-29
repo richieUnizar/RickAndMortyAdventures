@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,6 +28,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.presentation_favourite_characters.CharacterDisplay
+import com.example.presentation_favourite_characters.ui.FavouriteCharactersTestTags.CHARACTER_TEST_TAG
+import com.example.presentation_favourite_characters.ui.FavouriteCharactersTestTags.HEART_ICON_TEST_TAG
+import com.example.presentation_favourite_characters.ui.FavouriteCharactersTestTags.FAVOURITE_LIST_TEST_TAG
+import com.example.presentation_favourite_characters.ui.FavouriteCharactersTestTags.NAME_TEST_TAG
+
+object FavouriteCharactersTestTags {
+    const val FAVOURITE_LIST_TEST_TAG = "FavouriteListTestTab"
+    const val NAME_TEST_TAG = "NameTestTab"
+    const val HEART_ICON_TEST_TAG = "FavouriteListHeartIconTestTab"
+    const val CHARACTER_TEST_TAG = "CharacterTestTab"
+}
+
 
 @Composable
 fun FavouriteCharactersComposable(
@@ -34,7 +47,11 @@ fun FavouriteCharactersComposable(
     onItemClick: (CharacterDisplay) -> Unit,
     onHeartIconClick: (CharacterDisplay) -> Unit
 ) {
-    LazyVerticalGrid(columns = GridCells.Fixed(count = 2)) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(count = 2),
+        modifier = Modifier
+            .testTag(FAVOURITE_LIST_TEST_TAG)
+    ) {
         items(characters) { character ->
             TwoCharactersPerRow(
                 character = character,
@@ -58,6 +75,7 @@ fun TwoCharactersPerRow(
                 onItemClick(character)
             }
             .padding(8.dp)
+            .testTag(CHARACTER_TEST_TAG)
     ) {
         Box {
             AsyncImage(
@@ -72,9 +90,10 @@ fun TwoCharactersPerRow(
                 },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
+                    .testTag(HEART_ICON_TEST_TAG)
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Favorite ,
+                    imageVector = Icons.Filled.Favorite,
                     contentDescription = null,
                     tint = Color.Red
                 )
@@ -90,15 +109,18 @@ fun TwoCharactersPerRow(
                 textAlign = TextAlign.Center,
                 style = TextStyle(fontSize = 16.sp),
                 fontWeight = FontWeight.Black,
-                modifier = Modifier.padding(bottom = 4.dp),
                 maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .padding(bottom = 4.dp)
+                    .testTag(NAME_TEST_TAG),
             )
             Text(
                 text = character.species,
                 textAlign = TextAlign.Center,
                 style = TextStyle(fontSize = 14.sp),
-                modifier = Modifier.padding(top = 4.dp)
+                modifier = Modifier
+                    .padding(top = 4.dp)
             )
         }
     }
@@ -112,33 +134,33 @@ fun CharactersComposablePreview() {
         mutableListOf(
             CharacterDisplay(
                 id = 0,
-                name = "Name",
-                status = "Status",
-                species = "Species",
+                name = "Rick Sanchez",
+                status = "Alive",
+                species = "Humanoid",
                 image = "Image",
                 isInFavourites = false
             ),
             CharacterDisplay(
                 id = 0,
-                name = "Name",
-                status = "Status",
-                species = "Species",
+                name = "Morty Smith",
+                status = "Alive",
+                species = "Humanoid",
                 image = "Image",
                 isInFavourites = false
             ),
             CharacterDisplay(
                 id = 0,
-                name = "Name",
-                status = "Status",
-                species = "Species",
+                name = "Summer Smith",
+                status = "Alive",
+                species = "Humanoid",
                 image = "Image",
                 isInFavourites = false
             ),
             CharacterDisplay(
                 id = 0,
-                name = "Name",
-                status = "Status",
-                species = "Species",
+                name = "Beth Smith",
+                status = "Alive",
+                species = "Humanoid",
                 image = "Image",
                 isInFavourites = false
             )
