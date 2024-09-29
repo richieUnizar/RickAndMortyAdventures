@@ -22,6 +22,7 @@ import com.example.presentation_base.navigation.NavigationItem
 import com.example.presentation_character_details.CharacterDetailsScreen
 import com.example.presentation_character_list.CharacterListScreen
 import com.example.presentation_character_list.CharacterListViewModel
+import com.example.presentation_favourite_characters.FavouriteCharactersViewModel
 
 
 @Composable
@@ -45,7 +46,7 @@ fun BottomNavigationComposable(navController: NavHostController) {
                 )
             }
             composable(favourites.title) {
-                Text(favourites.title)
+                FavouriteCharactersViewModel(navController = navController)
             }
             composable(settingsTab.title) {
                 Text(settingsTab.title)
