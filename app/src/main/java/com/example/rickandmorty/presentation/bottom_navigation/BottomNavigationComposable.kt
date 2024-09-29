@@ -29,8 +29,7 @@ import com.example.presentation_favourite_characters.FavouriteCharactersViewMode
 fun BottomNavigationComposable(navController: NavHostController) {
     val homeTab = TabBarItem("Home", Icons.Filled.Home, Icons.Outlined.Home)
     val favourites = TabBarItem("Favourites", Icons.Filled.Favorite, Icons.Outlined.FavoriteBorder)
-    val settingsTab = TabBarItem("Settings", Icons.Filled.Settings, Icons.Outlined.Settings)
-    val tabBarItems = listOf(homeTab, favourites, settingsTab)
+    val tabBarItems = listOf(homeTab, favourites)
 
     Scaffold(bottomBar = { TabView(tabBarItems, navController) }) { paddingValues ->
         NavHost(
@@ -47,9 +46,6 @@ fun BottomNavigationComposable(navController: NavHostController) {
             }
             composable(favourites.title) {
                 FavouriteCharactersViewModel(navController = navController)
-            }
-            composable(settingsTab.title) {
-                Text(settingsTab.title)
             }
             composable(
                 route = NavigationItem.Detail.route + "/{characterId}",
