@@ -44,16 +44,16 @@ import com.example.presentation_character_list.CharacterDisplay
 fun CharactersComposable(
     listState: LazyListState,
     characters: List<CharacterDisplay>,
-    onItemClick: (CharacterDisplay) -> Unit
+    onItemClick: (CharacterDisplay) -> Unit,
+    onHeartIconClick: (isHeartSelected: Boolean, CharacterDisplay) -> Unit
 ) {
-
     LazyColumn(
         state = listState,
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
     ) {
         items(characters) { character ->
-            CharacterCard(character, onItemClick)
+            CharacterCard(character, onItemClick, onHeartIconClick)
         }
     }
 }
@@ -62,8 +62,9 @@ fun CharactersComposable(
 fun CharacterCard(
     character: CharacterDisplay,
     onItemClick: (CharacterDisplay) -> Unit,
+    onHeartIconClick: (isHeartSelected: Boolean, CharacterDisplay) -> Unit
 ) {
-    var isFavorite by remember { mutableStateOf(false) }
+    var isFavorite by remember { mutableStateOf(character.isInFavourites) }
 
     Card(
         modifier = Modifier
@@ -120,7 +121,10 @@ fun CharacterCard(
 
             }
             IconButton(
-                onClick = { isFavorite = !isFavorite },
+                onClick = {
+                    isFavorite = !isFavorite
+                    onHeartIconClick(isFavorite, character)
+                },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
             ) {
@@ -143,8 +147,10 @@ fun PreviewFavoriteCollectionCard() {
             image = "https://example.com/image.png",
             name = "Character Name",
             species = "Species",
-            status = "Status"
+            status = "Status",
+            isInFavourites = false,
         ),
-        onItemClick = {}
+        onItemClick = {},
+        onHeartIconClick = { _, _ -> }
     )
 }

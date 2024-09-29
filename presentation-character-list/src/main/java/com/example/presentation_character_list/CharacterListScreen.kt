@@ -18,9 +18,16 @@ fun CharacterListScreen(viewModel: CharacterListViewModel, navController: NavCon
 
     val listState: LazyListState = rememberLazyListState()
 
-    CharactersComposable(listState, display.characterList) { character ->
-        navController.navigate(NavigationItem.Detail.route + "/${character.id}")
-    }
+    CharactersComposable(
+        listState = listState,
+        characters = display.characterList,
+        onItemClick = { character ->
+            navController.navigate(NavigationItem.Detail.route + "/${character.id}")
+        },
+        onHeartIconClick = { isHeartSelected, character ->
+            viewModel.onHeartIconClicked(isHeartSelected, character)
+        }
+    )
 
     LaunchedEffect(listState) {
         snapshotFlow { listState.firstVisibleItemIndex }

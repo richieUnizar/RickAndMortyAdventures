@@ -3,7 +3,11 @@ package com.example.presentation_character_list
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.characters.Characters
+import com.example.domain.Favourites.AddToFavouriteUseCase
+import com.example.domain.Favourites.AddToFavouriteUseCase.*
+import com.example.domain.Favourites.GetFavouriteCharactersUseCase
+import com.example.domain.Favourites.RemoveToFavouriteUseCase
+import com.example.domain.characters.Character
 import com.example.domain.characters.GetCharactersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharacterListViewModel @Inject constructor(
-    private val charactersUseCase: GetCharactersUseCase
+    private val charactersUseCase: GetCharactersUseCase,
+    private val favouriteCharacterUseCase: AddToFavouriteUseCase,
+    private val removeToFavouriteUseCase: RemoveToFavouriteUseCase,
 ) : ViewModel() {
 
     private val _characterList = MutableStateFlow(CharactersDisplay(emptyList()))
@@ -22,6 +28,7 @@ class CharacterListViewModel @Inject constructor(
 
     private var pageToLoad = 1
     private var numberOfPages: Int? = null
+    private var charactersList: List<Character>? = null
 
     init {
         fetchCharacters(pageToLoad)
@@ -45,6 +52,7 @@ class CharacterListViewModel @Inject constructor(
                 onSuccess = { characters ->
                     pageToLoad++
                     numberOfPages = characters.info.numberOfPages
+                    this@CharacterListViewModel.charactersList = characters.characterList
 
                     val display: CharactersDisplay = characters.toDisplay()
                     _characterList.value = display
@@ -53,6 +61,18 @@ class CharacterListViewModel @Inject constructor(
                     Log.d("RickAndMorty", error.message ?: "Unknown error")
                 }
             )
+        }
+    }
+
+    fun onHeartIconClicked(isHeartSelected: Boolean, characterDisplay: CharacterDisplay){
+        viewModelScope.launch(Dispatchers.IO) {
+            if (isHeartSelected) {
+                charactersList?.find { it.id == characterDisplay.id }?.let { safeCharacter ->
+                    favouriteCharacterUseCase.addCharacterToFavorites(Params(safeCharacter))
+                }
+            } else {
+                removeToFavouriteUseCase.removeCharacterFromFavorites(characterDisplay.id)
+            }
         }
     }
 }

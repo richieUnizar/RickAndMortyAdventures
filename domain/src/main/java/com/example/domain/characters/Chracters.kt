@@ -16,4 +16,5 @@ data class Character(
     val status: String,
     val species: String,
     val image: String,
+    val isInFavourites: Boolean = false
 )

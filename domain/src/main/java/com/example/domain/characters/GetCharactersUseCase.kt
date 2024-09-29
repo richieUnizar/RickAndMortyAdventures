@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 
 class GetCharactersUseCase @Inject constructor(
-    private val characterRepository: CharactersRepository
+    private val characterRepository: CharactersRepository,
 ) {
 
     suspend fun getCharacters(page: Int): Either<Throwable, Characters> = characterRepository.getCharacters(page)

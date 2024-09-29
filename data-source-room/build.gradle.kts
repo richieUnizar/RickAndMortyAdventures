@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.data"
+    namespace = "com.example.data_source_room"
     compileSdk = 34
 
     defaultConfig {
@@ -32,8 +32,9 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
     hilt {
-        enableAggregatingTask = true
+        enableAggregatingTask = false
     }
 }
 
@@ -45,15 +46,18 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    // Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
 
     // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.navigation.compose)
 
     implementation(project(":common"))
-    implementation(project(":domain"))
-    implementation(project(":data-source-rest"))
-    implementation(project(":data-source-room"))
 }
 
 kapt {

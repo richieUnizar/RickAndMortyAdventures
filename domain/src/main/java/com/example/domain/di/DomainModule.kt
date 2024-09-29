@@ -1,5 +1,11 @@
 package com.example.domain.di
 
+import com.example.domain.Favourites.FavouriteCharactersRepository
+import com.example.domain.Favourites.AddToFavouriteUseCase
+import com.example.domain.Favourites.AddToFavouritesRepository
+import com.example.domain.Favourites.GetFavouriteCharactersUseCase
+import com.example.domain.Favourites.RemoveToFavouriteUseCase
+import com.example.domain.Favourites.RemoveToFavouritesRepository
 import com.example.domain.character.CharacterRepository
 import com.example.domain.character.GetCharacterUseCase
 import com.example.domain.characters.CharactersRepository
@@ -24,5 +30,23 @@ class DomainModule {
     @Singleton
     fun charactersUseCase(charactersRepository: CharactersRepository): GetCharactersUseCase {
         return GetCharactersUseCase(charactersRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun addToFavouritesUseCase(addToFavouritesRepository: AddToFavouritesRepository): AddToFavouriteUseCase {
+        return AddToFavouriteUseCase(addToFavouritesRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun removeToFavouritesUseCase(removeToFavouritesRepository: RemoveToFavouritesRepository): RemoveToFavouriteUseCase {
+        return RemoveToFavouriteUseCase(removeToFavouritesRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun getFavouritesCharactersUseCase(favouriteCharactersRepository: FavouriteCharactersRepository): GetFavouriteCharactersUseCase {
+        return GetFavouriteCharactersUseCase(favouriteCharactersRepository)
     }
 }

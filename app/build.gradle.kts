@@ -89,6 +89,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":data-source-rest"))
+    implementation(project(":data-source-room"))
     implementation(project(":presentation-base"))
     implementation(project(":presentation-character-list"))
     implementation(project(":presentation-character-details"))

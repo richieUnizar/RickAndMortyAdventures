@@ -22,5 +22,5 @@ fun CharacterDTO.toDomain() = Character(
     name = this.name,
     status = this.status,
     species = this.species,
-    image = this.image
+    image = this.image,
 )
