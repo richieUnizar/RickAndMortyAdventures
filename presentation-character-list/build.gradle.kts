@@ -2,11 +2,12 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.android.jupiter)
     id("kotlin-kapt")
 }
 
 android {
-    namespace = "com.example.presentation_character_list"
+    namespace = "com.example.presentation_favourite_characters"
     compileSdk = 34
 
     defaultConfig {
@@ -41,24 +42,21 @@ android {
     hilt {
         enableAggregatingTask = false
     }
+    junitPlatform {
+        instrumentationTests.includeExtensions.set(true)
+    }
 }
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.material)
     implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 
     // Hilt
     implementation(libs.hilt.android)
@@ -68,10 +66,19 @@ dependencies {
     // Coil
     implementation(libs.coil)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
+    // Mockk
+    androidTestImplementation(libs.mockk.android)
+    testImplementation(libs.mockk)
+    // JUnit 5
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.junit.jupiter.params)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    // Jetpack Compose Test
+    androidTestImplementation(libs.android.compose.ui.test)
+    debugImplementation(libs.android.compose.ui.test.manifest)
+    // Coroutines test library
+    testImplementation(libs.corroutine.test)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 

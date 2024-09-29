@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
@@ -30,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,6 +41,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.presentation_character_list.CharacterDisplay
+import com.example.presentation_character_list.ui.CharacterListTestTags.CHARACTER_LIST_TEST_TAG
+import com.example.presentation_character_list.ui.CharacterListTestTags.CHARACTER_TEST_TAG
+import com.example.presentation_character_list.ui.CharacterListTestTags.HEART_ICON_TEST_TAG
+import com.example.presentation_character_list.ui.CharacterListTestTags.NAME_TEST_TAG
+
+object CharacterListTestTags {
+    const val CHARACTER_LIST_TEST_TAG = "characterListTestTab"
+    const val NAME_TEST_TAG = "nameTestTab"
+    const val HEART_ICON_TEST_TAG = "heartIconTestTab"
+    const val CHARACTER_TEST_TAG = "characterTestTab"
+}
 
 @Composable
 fun CharactersComposable(
@@ -51,6 +64,7 @@ fun CharactersComposable(
         state = listState,
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+        modifier = Modifier.testTag(CHARACTER_LIST_TEST_TAG)
     ) {
         items(characters) { character ->
             CharacterCard(character, onItemClick, onHeartIconClick)
@@ -69,7 +83,8 @@ fun CharacterCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onItemClick(character) },
+            .clickable { onItemClick(character) }
+            .testTag(CHARACTER_TEST_TAG),
         shape = RectangleShape,
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
@@ -99,9 +114,11 @@ fun CharacterCard(
                         textAlign = TextAlign.Center,
                         style = TextStyle(fontSize = 16.sp),
                         fontWeight = FontWeight.Black,
-                        modifier = Modifier.padding(bottom = 4.dp),
                         maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier
+                            .padding(bottom = 4.dp)
+                            .testTag(NAME_TEST_TAG)
                     )
 
                     Text(
@@ -127,6 +144,7 @@ fun CharacterCard(
                 },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
+                    .testTag(HEART_ICON_TEST_TAG)
             ) {
                 Icon(
                     imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
@@ -140,14 +158,42 @@ fun CharacterCard(
 
 @Preview
 @Composable
+fun PreviewCharactersComposable() {
+    CharactersComposable(
+        listState = rememberLazyListState(),
+        characters = mutableListOf(
+            CharacterDisplay(
+                id = 0,
+                name = "Rick Sanchez",
+                status = "Alive",
+                species = "Humanoid",
+                image = "Image",
+                isInFavourites = false
+            ),
+            CharacterDisplay(
+                id = 0,
+                name = "Morty Smith",
+                status = "Alive",
+                species = "Humanoid",
+                image = "Image",
+                isInFavourites = false
+            ),
+        ),
+        onItemClick = {},
+        onHeartIconClick = { _, _ -> }
+    )
+}
+
+@Preview
+@Composable
 fun PreviewFavoriteCollectionCard() {
     CharacterCard(
         character = CharacterDisplay(
             id = 0,
             image = "https://example.com/image.png",
-            name = "Character Name",
-            species = "Species",
-            status = "Status",
+            name = "Rick Sanchez",
+            species = "Humanoid",
+            status = "Alive",
             isInFavourites = false,
         ),
         onItemClick = {},
