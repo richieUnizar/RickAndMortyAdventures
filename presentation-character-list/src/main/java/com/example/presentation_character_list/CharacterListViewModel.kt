@@ -55,7 +55,13 @@ class CharacterListViewModel @Inject constructor(
                     this@CharacterListViewModel.charactersList = characters.characterList
 
                     val display: CharactersDisplay = characters.toDisplay()
-                    _characterList.value = display
+
+                    val updatedCharacterList =
+                        _characterList.value.characterList + display.characterList
+
+                    _characterList.value = display.copy(
+                        characterList = updatedCharacterList
+                    )
                 },
                 onFailure = { error ->
                     Log.d("RickAndMorty", error.message ?: "Unknown error")
