@@ -20,14 +20,18 @@ class CharacterDetailsViewModel @Inject constructor(
     private val _characterDetail = MutableStateFlow(CharacterDisplay(0, "", "", "", ""))
     val characterDetail: StateFlow<CharacterDisplay> = _characterDetail
 
+    private val _hasError = MutableStateFlow(false)
+    val hasError: StateFlow<Boolean> = _hasError
+
     fun fetchCharacters(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             characterUseCase.getCharacter(id).fold(
                 onSuccess = { character ->
+                    _hasError.value = false
                     _characterDetail.value = character.toDisplay()
                 },
                 onFailure = { error ->
-                    Log.d("RickAndMorty", error.message ?: "Unknown error")
+                    _hasError.value = true
                 }
             )
         }

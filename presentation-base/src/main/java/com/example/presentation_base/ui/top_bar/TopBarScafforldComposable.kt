@@ -1,4 +1,4 @@
-package com.example.presentation_base.top_bar
+package com.example.presentation_base.ui.top_bar
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth

@@ -26,6 +26,9 @@ class CharacterListViewModel @Inject constructor(
     private val _characterList = MutableStateFlow(CharactersDisplay(0, emptyList()))
     val characterList: StateFlow<CharactersDisplay> = _characterList
 
+    private val _hasError = MutableStateFlow(false)
+    val hasError: StateFlow<Boolean> = _hasError
+
     private var pageToLoad = 1
     private var numberOfPages: Int? = null
     private var charactersList: List<Character>? = null
@@ -50,6 +53,8 @@ class CharacterListViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             charactersUseCase.getCharacters(page).fold(
                 onSuccess = { characters ->
+                    _hasError.value = false
+
                     pageToLoad++
                     numberOfPages = characters.info.numberOfPages
                     this@CharacterListViewModel.charactersList = characters.characterList
@@ -63,8 +68,8 @@ class CharacterListViewModel @Inject constructor(
                         characterList = updatedCharacterList
                     )
                 },
-                onFailure = { error ->
-                    Log.d("RickAndMorty", error.message ?: "Unknown error")
+                onFailure = { _ ->
+                    _hasError.value = true
                 }
             )
         }

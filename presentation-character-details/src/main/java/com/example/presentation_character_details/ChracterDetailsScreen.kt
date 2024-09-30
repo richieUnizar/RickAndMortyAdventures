@@ -10,7 +10,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.presentation_base.top_bar.TopBarScaffoldComposable
+import com.example.presentation_base.ui.error_screen.ErrorMessageComposable
+import com.example.presentation_base.ui.top_bar.TopBarScaffoldComposable
 import com.example.presentation_character_details.ui.CharacterDetailsComposable
 
 @Composable
@@ -19,6 +20,7 @@ fun CharacterDetailsScreen(id: Int, navController: NavController) {
     val viewModel: CharacterDetailsViewModel = hiltViewModel()
 
     val character by viewModel.characterDetail.collectAsState()
+    val hasError by viewModel.hasError.collectAsState()
 
     viewModel.fetchCharacters(id)
 
@@ -32,10 +34,14 @@ fun CharacterDetailsScreen(id: Int, navController: NavController) {
         },
         showBackButton = true,
     ) { paddingModifier ->
-        CharacterDetailsComposable(
-            character = character,
-            modifier = paddingModifier
-        )
+        if (hasError) {
+            ErrorMessageComposable()
+        } else {
+            CharacterDetailsComposable(
+                character = character,
+                modifier = paddingModifier
+            )
+        }
     }
 
 }

@@ -11,7 +11,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.presentation_base.navigation.NavigationItem
-import com.example.presentation_base.top_bar.TopBarScaffoldComposable
+import com.example.presentation_base.ui.top_bar.TopBarScaffoldComposable
 import com.example.presentation_favourite_characters.ui.FavouriteCharactersComposable
 import com.example.presentation_favourite_characters.ui.FavouriteMessageComposable
 

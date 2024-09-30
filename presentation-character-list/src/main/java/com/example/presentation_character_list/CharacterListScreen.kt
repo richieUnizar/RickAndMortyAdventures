@@ -14,44 +14,52 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import com.example.presentation_base.navigation.NavigationItem
-import com.example.presentation_base.top_bar.TopBarScaffoldComposable
+import com.example.presentation_base.ui.error_screen.ErrorMessageComposable
+import com.example.presentation_base.ui.top_bar.TopBarScaffoldComposable
 import com.example.presentation_character_list.ui.CharactersComposable
 
 @Composable
 fun CharacterListScreen(viewModel: CharacterListViewModel, navController: NavController) {
 
     val display by viewModel.characterList.collectAsState()
+    val hasError by viewModel.hasError.collectAsState()
 
     val listState: LazyListState = rememberLazyListState()
 
-    TopBarScaffoldComposable(
-        navController = navController,
-        titleContent = {
-            Text(
-                text = "Characters (${display.numberOfCharacters})",
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+    if(hasError){
+        ErrorMessageComposable()
+    } else {
+        TopBarScaffoldComposable(
+            navController = navController,
+            titleContent = {
+                Text(
+                    text = "Characters (${display.numberOfCharacters})",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            },
+            showBackButton = false,
+        ) { paddingModifier ->
+            CharactersComposable(
+                listState = listState,
+                characters = display.characterList,
+                onItemClick = { character ->
+                    navController.navigate(NavigationItem.Detail.route + "/${character.id}")
+                },
+                onHeartIconClick = { isHeartSelected, character ->
+                    viewModel.onHeartIconClicked(isHeartSelected, character)
+                },
+                modifier = paddingModifier
             )
-        },
-        showBackButton = false,
-    ) { paddingModifier ->
-        CharactersComposable(
-            listState = listState,
-            characters = display.characterList,
-            onItemClick = { character ->
-                navController.navigate(NavigationItem.Detail.route + "/${character.id}")
-            },
-            onHeartIconClick = { isHeartSelected, character ->
-                viewModel.onHeartIconClicked(isHeartSelected, character)
-            },
-            modifier = paddingModifier
-        )
 
-        LaunchedEffect(listState) {
-            snapshotFlow { listState.firstVisibleItemIndex }
-                .collect { index ->
-                    viewModel.loadNextPage(index)
-                }
+            LaunchedEffect(listState) {
+                snapshotFlow { listState.firstVisibleItemIndex }
+                    .collect { index ->
+                        viewModel.loadNextPage(index)
+                    }
+            }
         }
     }
+
+
 }
