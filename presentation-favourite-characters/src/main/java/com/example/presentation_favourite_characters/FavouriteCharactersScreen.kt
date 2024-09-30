@@ -10,7 +10,7 @@ import com.example.presentation_favourite_characters.ui.FavouriteCharactersCompo
 import com.example.presentation_favourite_characters.ui.FavouriteMessageComposable
 
 @Composable
-fun FavouriteCharactersViewModel(
+fun FavouriteCharactersScreen(
     navController: NavController
 ) {
     val viewModel: FavouriteCharactersViewModel = hiltViewModel()

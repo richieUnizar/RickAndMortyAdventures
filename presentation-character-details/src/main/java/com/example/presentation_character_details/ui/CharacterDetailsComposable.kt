@@ -17,11 +17,11 @@ import com.example.presentation_character_details.CharacterDisplay
 
 @Composable
 fun CharacterDetailsComposable(
-    character: CharacterDisplay
+    character: CharacterDisplay,
+    modifier: Modifier = Modifier,
 ){
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
             .verticalScroll(rememberScrollState())
     ) {
         AsyncImage(
