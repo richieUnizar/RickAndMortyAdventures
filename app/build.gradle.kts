@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.runtime.livedata)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -94,6 +95,7 @@ dependencies {
     implementation(project(":presentation-character-list"))
     implementation(project(":presentation-character-details"))
     implementation(project(":presentation-favourite-characters"))
+    implementation(project(":presentation-search"))
 }
 
 kapt {

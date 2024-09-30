@@ -30,7 +30,6 @@ fun FavouriteCharactersScreen(
             titleContent = {
                 Text(
                     text = stringResource(R.string.favourite_characters_title),
-                    textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
             },

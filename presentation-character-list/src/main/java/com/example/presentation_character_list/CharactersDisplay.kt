@@ -19,9 +19,10 @@ data class CharacterDisplay(
 
 fun Characters.toDisplay() = CharactersDisplay(
     numberOfCharacters = this.info.numberOfCharacters,
-    characterList = this.characterList.map { it.toDisplay() }
+    characterList = this.characterList.toDisplay()
 )
 
+fun List<Character>.toDisplay() = this.map { it.toDisplay() }
 
 fun Character.toDisplay() = CharacterDisplay(
     id = this.id,

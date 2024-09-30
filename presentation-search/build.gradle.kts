@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.presentation_base"
+    namespace = "com.example.presentation_search"
     compileSdk = 34
 
     defaultConfig {
@@ -52,7 +52,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.runtime.livedata)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -72,6 +71,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(project(":common"))
+    implementation(project(":data"))
+    implementation(project(":domain"))
+    implementation(project(":presentation-base"))
 }
 
 kapt {

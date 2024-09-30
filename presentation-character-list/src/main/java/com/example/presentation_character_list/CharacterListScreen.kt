@@ -10,10 +10,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
+import com.example.domain.characters.Character
 import com.example.presentation_base.navigation.NavigationItem
+import com.example.presentation_base.navigation.observeLiveData
 import com.example.presentation_base.ui.error_screen.ErrorMessageComposable
 import com.example.presentation_base.ui.top_bar.TopBarScaffoldComposable
 import com.example.presentation_character_list.ui.CharactersComposable
@@ -23,6 +23,14 @@ fun CharacterListScreen(viewModel: CharacterListViewModel, navController: NavCon
 
     val display by viewModel.characterList.collectAsState()
     val hasError by viewModel.hasError.collectAsState()
+
+    val filterByNameList = observeLiveData<List<Character>>(navController, NavigationItem.Search.searchByNameListKey)
+
+    LaunchedEffect(filterByNameList) {
+        filterByNameList.value?.let { characters ->
+            viewModel.updateCharacterList(characters)
+        }
+    }
 
     val listState: LazyListState = rememberLazyListState()
 
@@ -34,11 +42,14 @@ fun CharacterListScreen(viewModel: CharacterListViewModel, navController: NavCon
             titleContent = {
                 Text(
                     text = "Characters (${display.numberOfCharacters})",
-                    textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
             },
             showBackButton = false,
+            showSearchButton = true,
+            onSearchClicked = {
+                navController.navigate(NavigationItem.Search.route)
+            }
         ) { paddingModifier ->
             CharactersComposable(
                 listState = listState,

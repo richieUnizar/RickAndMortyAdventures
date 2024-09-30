@@ -24,6 +24,7 @@ import com.example.presentation_character_details.CharacterDetailsScreen
 import com.example.presentation_character_list.CharacterListScreen
 import com.example.presentation_character_list.CharacterListViewModel
 import com.example.presentation_favourite_characters.FavouriteCharactersScreen
+import com.example.presentation_search.SearchScreen
 
 
 @Composable
@@ -68,6 +69,11 @@ fun BottomNavigationComposable(navController: NavHostController) {
                 val id = backStackEntry.arguments?.getInt("characterId") ?: 1
 
                 CharacterDetailsScreen(id, navController)
+            }
+            composable(
+                route = NavigationItem.Search.route,
+            ) { backStackEntry ->
+                SearchScreen(navController)
             }
         }
     }

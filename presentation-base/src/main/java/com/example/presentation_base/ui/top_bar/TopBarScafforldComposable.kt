@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,6 +27,8 @@ fun TopBarScaffoldComposable(
     navController: NavController,
     titleContent: @Composable () -> Unit,
     showBackButton: Boolean = false,
+    showSearchButton: Boolean = false,
+    onSearchClicked: () -> Unit = {},
     content: @Composable (Modifier) -> Unit
 ) {
     Scaffold(
@@ -40,6 +43,17 @@ fun TopBarScaffoldComposable(
                             Icon(
                                 imageVector = Icons.Default.ArrowBack,
                                 contentDescription = "Back",
+                                tint = Color.Black
+                            )
+                        }
+                    }
+                },
+                actions = {
+                    if (showSearchButton) {
+                        IconButton(onClick = { onSearchClicked() }) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Search",
                                 tint = Color.Black
                             )
                         }

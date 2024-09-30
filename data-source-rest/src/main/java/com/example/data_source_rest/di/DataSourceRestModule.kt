@@ -6,6 +6,9 @@ import com.example.data_source_rest.character.CharacterDataSourceImpl
 import com.example.data_source_rest.characters.CharactersApiRest
 import com.example.data_source_rest.characters.CharactersDataSource
 import com.example.data_source_rest.characters.CharactersDataSourceImpl
+import com.example.data_source_rest.search.SearchApiRest
+import com.example.data_source_rest.search.SearchDataSource
+import com.example.data_source_rest.search.SearchDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,6 +44,12 @@ object DataSourceRestModule {
 
     @Provides
     @Singleton
+    fun provideSearchApiRest(retrofit: Retrofit): SearchApiRest {
+        return retrofit.create(SearchApiRest::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideCharacterDataSourceImpl(
         characterApiRest: CharacterApiRest
     ): CharacterDataSource {
@@ -53,5 +62,13 @@ object DataSourceRestModule {
         charactersApiRest: CharactersApiRest
     ): CharactersDataSource {
         return CharactersDataSourceImpl(charactersApiRest)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchDataSourceImpl(
+        searchApiRest: SearchApiRest
+    ): SearchDataSource {
+        return SearchDataSourceImpl(searchApiRest)
     }
 }

@@ -1,13 +1,12 @@
 package com.example.presentation_character_list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.Favourites.AddToFavouriteUseCase
 import com.example.domain.Favourites.AddToFavouriteUseCase.*
-import com.example.domain.Favourites.GetFavouriteCharactersUseCase
 import com.example.domain.Favourites.RemoveToFavouriteUseCase
 import com.example.domain.characters.Character
+import com.example.domain.characters.Characters
 import com.example.domain.characters.GetCharactersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +53,7 @@ class CharacterListViewModel @Inject constructor(
             charactersUseCase.getCharacters(page).fold(
                 onSuccess = { characters ->
                     _hasError.value = false
-
+                    val cha: Characters = characters
                     pageToLoad++
                     numberOfPages = characters.info.numberOfPages
                     this@CharacterListViewModel.charactersList = characters.characterList
@@ -85,5 +84,14 @@ class CharacterListViewModel @Inject constructor(
                 removeToFavouriteUseCase.removeCharacterFromFavorites(characterDisplay.id)
             }
         }
+    }
+
+    fun updateCharacterList(characters: List<Character>) {
+        val display = characters.toDisplay()
+
+        _characterList.value = _characterList.value.copy(
+            numberOfCharacters = display.count(),
+            characterList = display
+        )
     }
 }
