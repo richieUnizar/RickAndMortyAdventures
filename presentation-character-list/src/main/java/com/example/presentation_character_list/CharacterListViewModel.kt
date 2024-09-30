@@ -23,7 +23,7 @@ class CharacterListViewModel @Inject constructor(
     private val removeToFavouriteUseCase: RemoveToFavouriteUseCase,
 ) : ViewModel() {
 
-    private val _characterList = MutableStateFlow(CharactersDisplay(emptyList()))
+    private val _characterList = MutableStateFlow(CharactersDisplay(0, emptyList()))
     val characterList: StateFlow<CharactersDisplay> = _characterList
 
     private var pageToLoad = 1
@@ -34,7 +34,7 @@ class CharacterListViewModel @Inject constructor(
         fetchCharacters(pageToLoad)
     }
 
-    fun loadNextPage(index: Int){
+    fun loadNextPage(index: Int) {
         numberOfPages?.let {
             val isNearEndOfList = index == _characterList.value.characterList.count() - 10
             val shouldLoadNextPage = pageToLoad <= it
@@ -64,7 +64,7 @@ class CharacterListViewModel @Inject constructor(
         }
     }
 
-    fun onHeartIconClicked(isHeartSelected: Boolean, characterDisplay: CharacterDisplay){
+    fun onHeartIconClicked(isHeartSelected: Boolean, characterDisplay: CharacterDisplay) {
         viewModelScope.launch(Dispatchers.IO) {
             if (isHeartSelected) {
                 charactersList?.find { it.id == characterDisplay.id }?.let { safeCharacter ->

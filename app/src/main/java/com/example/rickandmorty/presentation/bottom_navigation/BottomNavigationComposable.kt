@@ -43,7 +43,7 @@ fun BottomNavigationComposable(navController: NavHostController) {
             if (showBottomBar) {
                 TabView(tabBarItems, navController)
             }
-        }) { paddingValues ->
+        }) { _ ->
         NavHost(
             navController = navController,
             startDestination = homeTab.title,
@@ -51,18 +51,13 @@ fun BottomNavigationComposable(navController: NavHostController) {
         ) {
             composable(homeTab.title) {
                 val characterListViewModel: CharacterListViewModel = hiltViewModel()
-                Box(modifier = Modifier.padding(paddingValues)) {
-                    CharacterListScreen(
-                        characterListViewModel,
-                        navController,
-                    )
-                }
-
+                CharacterListScreen(
+                    characterListViewModel,
+                    navController,
+                )
             }
             composable(favourites.title) {
-                Box(modifier = Modifier.padding(paddingValues)) {
-                    FavouriteCharactersScreen(navController = navController)
-                }
+                FavouriteCharactersScreen(navController = navController)
             }
             composable(
                 route = NavigationItem.Detail.route + "/{characterId}",

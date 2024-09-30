@@ -1,9 +1,13 @@
 package com.example.presentation_character_details
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.presentation_base.top_bar.TopBarScaffoldComposable
@@ -20,7 +24,12 @@ fun CharacterDetailsScreen(id: Int, navController: NavController) {
 
     TopBarScaffoldComposable(
         navController = navController,
-        title = stringResource(R.string.character_details) ,
+        titleContent = {
+            Text(
+                text = stringResource(R.string.character_details_title),
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
         showBackButton = true,
     ) { paddingModifier ->
         CharacterDetailsComposable(

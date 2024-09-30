@@ -58,13 +58,14 @@ fun CharactersComposable(
     listState: LazyListState,
     characters: List<CharacterDisplay>,
     onItemClick: (CharacterDisplay) -> Unit,
-    onHeartIconClick: (isHeartSelected: Boolean, CharacterDisplay) -> Unit
+    onHeartIconClick: (isHeartSelected: Boolean, CharacterDisplay) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     LazyColumn(
         state = listState,
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
-        modifier = Modifier.testTag(CHARACTER_LIST_TEST_TAG)
+        modifier = modifier.testTag(CHARACTER_LIST_TEST_TAG)
     ) {
         items(characters) { character ->
             CharacterCard(character, onItemClick, onHeartIconClick)

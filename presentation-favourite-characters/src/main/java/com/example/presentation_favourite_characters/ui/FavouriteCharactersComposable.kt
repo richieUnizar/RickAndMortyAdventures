@@ -45,11 +45,12 @@ object FavouriteCharactersTestTags {
 fun FavouriteCharactersComposable(
     characters: List<CharacterDisplay>,
     onItemClick: (CharacterDisplay) -> Unit,
-    onHeartIconClick: (CharacterDisplay) -> Unit
+    onHeartIconClick: (CharacterDisplay) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(count = 2),
-        modifier = Modifier
+        modifier = modifier
             .testTag(FAVOURITE_LIST_TEST_TAG)
     ) {
         items(characters) { character ->

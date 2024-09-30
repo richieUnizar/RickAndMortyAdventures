@@ -1,6 +1,7 @@
 package com.example.presentation_base.top_bar
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -14,6 +15,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 
@@ -21,14 +24,16 @@ import androidx.navigation.NavController
 @Composable
 fun TopBarScaffoldComposable(
     navController: NavController,
-    title: String,
+    titleContent: @Composable () -> Unit,
     showBackButton: Boolean = false,
     content: @Composable (Modifier) -> Unit
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = title) },
+                title = {
+                    titleContent()
+                },
                 navigationIcon = {
                     if (showBackButton) {
                         IconButton(onClick = { navController.popBackStack() }) {
@@ -41,7 +46,7 @@ fun TopBarScaffoldComposable(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent
+                    containerColor = Color.White
                 )
             )
         },

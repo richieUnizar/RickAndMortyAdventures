@@ -4,7 +4,8 @@ import com.example.domain.characters.Character
 import com.example.domain.characters.Characters
 
 data class CharactersDisplay(
-    var characterList: List<CharacterDisplay>
+    var numberOfCharacters: Int,
+    var characterList: List<CharacterDisplay>,
 )
 
 data class CharacterDisplay(
@@ -17,6 +18,7 @@ data class CharacterDisplay(
 )
 
 fun Characters.toDisplay() = CharactersDisplay(
+    numberOfCharacters = this.info.numberOfCharacters,
     characterList = this.characterList.map { it.toDisplay() }
 )
 
