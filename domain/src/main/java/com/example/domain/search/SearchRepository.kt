@@ -5,6 +5,6 @@ import com.example.domain.model.Characters
 
 interface SearchRepository {
 
-    fun getCharacterByName(name: String): Either<Throwable, Characters>
+    suspend fun getCharacterByName(name: String): Either<Throwable, Characters>
 
 }

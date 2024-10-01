@@ -71,8 +71,9 @@ class DataModule {
     @Singleton
     fun provideSearchRepository(
         searchDataSource: SearchDataSource,
+        favouriteCharactersUseCase: FavouriteCharactersRepository,
     ): SearchRepository {
-        return SearchRepositoryImpl(searchDataSource)
+        return SearchRepositoryImpl(searchDataSource, favouriteCharactersUseCase)
     }
 
 }

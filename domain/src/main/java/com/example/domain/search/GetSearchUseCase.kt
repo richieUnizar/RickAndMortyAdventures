@@ -6,5 +6,5 @@ class GetSearchUseCase@Inject constructor(
     private val searchRepository: SearchRepository,
 ) {
 
-    fun searchByName(named: String) = searchRepository.getCharacterByName(named)
+    suspend fun searchByName(named: String) = searchRepository.getCharacterByName(named)
 }
