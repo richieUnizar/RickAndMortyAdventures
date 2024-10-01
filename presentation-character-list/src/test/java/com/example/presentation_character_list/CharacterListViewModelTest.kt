@@ -7,6 +7,8 @@ import com.example.domain.model.Character
 import com.example.domain.model.Characters
 import com.example.domain.characters.GetCharactersUseCase
 import com.example.domain.model.Info
+import com.example.domain.model.Location
+import com.example.domain.model.Origin
 import io.mockk.Runs
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -94,6 +96,9 @@ class CharacterListViewModelTest {
     @Test
     fun `when onHeartIconClicked is called with true, then character should be added to favourites`() =
         runTest {
+            val expectedCharacterParam = AddToFavouriteUseCase.Params(
+                generateCharacterList(1).first()
+            )
             val characterDisplay = CharacterDisplay(
                 id = 1,
                 name = "Character 1",
@@ -112,17 +117,7 @@ class CharacterListViewModelTest {
             advanceUntilIdle()
 
             coVerify(exactly = 1) {
-                favouriteCharacterUseCase.addCharacterToFavorites(
-                    AddToFavouriteUseCase.Params(
-                        Character(
-                            id = 1,
-                            name = "Character 1",
-                            status = "Alive",
-                            species = "Alien",
-                            image = "image1"
-                        )
-                    )
-                )
+                favouriteCharacterUseCase.addCharacterToFavorites(expectedCharacterParam)
             }
         }
 
@@ -159,18 +154,19 @@ class CharacterListViewModelTest {
                     name = "Character $i",
                     status = "Alive",
                     species = "Alien",
-                    image = "image$i"
+                    image = "image$i",
+                    type = "type",
+                    gender = "gender",
+                    origin = Origin("", ""),
+                    location = Location("", ""),
+                    episode = emptyList(),
+                    url = "url",
+                    created = "created",
+                    isInFavourites = false,
                 )
             )
         }
 
         return characterList
-    }
-
-    companion object {
-        val CHARACTER_LIST = listOf(
-            Character(id = 1, name = "Rick", status = "Alive", species = "Human", image = "image1"),
-            Character(id = 2, name = "Morty", status = "Alive", species = "Human", image = "image2")
-        )
     }
 }
