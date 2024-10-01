@@ -53,7 +53,7 @@ class CharacterListViewModel @Inject constructor(
             charactersUseCase.getCharacters(page).fold(
                 onSuccess = { characters ->
                     _hasError.value = false
-                    val cha: Characters = characters
+
                     pageToLoad++
                     numberOfPages = characters.info.numberOfPages
                     this@CharacterListViewModel.charactersList = characters.characterList

@@ -18,7 +18,7 @@ class CharactersDataSourceImpl @Inject constructor(
             val characters = response.body()!!
             Either.Success(characters)
         } else {
-            Either.Error(Throwable("Error al obtener los personajes"))
+            Either.Error(Throwable("Error getting characters"))
         }
     }
 }

@@ -9,13 +9,27 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 dependencies {
+    implementation(libs.kotlinx.coroutines.core)
+
     // Hilt
     implementation(libs.hilt.core)
     kapt(libs.hilt.compiler)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+    // Mockk
+    testImplementation(libs.mockk)
+
+    // JUnit 5
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.junit.jupiter.params)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    // Coroutines test library
+    testImplementation(libs.corroutine.test)
 
     implementation(project(":common"))
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 kapt {
