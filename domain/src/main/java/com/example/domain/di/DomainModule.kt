@@ -28,12 +28,6 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun charactersUseCase(charactersRepository: CharactersRepository): GetCharactersUseCase {
-        return GetCharactersUseCase(charactersRepository)
-    }
-
-    @Provides
-    @Singleton
     fun addToFavouritesUseCase(addToFavouritesRepository: AddToFavouritesRepository): AddToFavouriteUseCase {
         return AddToFavouriteUseCase(addToFavouritesRepository)
     }

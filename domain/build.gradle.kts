@@ -13,6 +13,8 @@ dependencies {
     implementation(libs.hilt.core)
     kapt(libs.hilt.compiler)
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+
     implementation(project(":common"))
 }
 
