@@ -1,5 +1,6 @@
 package com.example.presentation_search
 
+import androidx.activity.compose.BackHandler
 import com.example.presentation_base.search_bar.SearchBarComposable
 
 import androidx.compose.runtime.Composable
@@ -13,6 +14,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.presentation_base.navigation.NavigationItem
+import com.example.domain.characters.Character
+import com.example.presentation_base.back_button.HandleBackButton
 
 @Composable
 fun SearchScreen(navController: NavController) {
@@ -22,16 +25,7 @@ fun SearchScreen(navController: NavController) {
     val characters by viewModel.characterList.collectAsState()
     var shouldNavigateBack by rememberSaveable { mutableStateOf(false) }
 
-    LaunchedEffect(characters, shouldNavigateBack) {
-        if (shouldNavigateBack && characters.isNotEmpty()) {
-            navController.previousBackStackEntry?.savedStateHandle?.set(
-                NavigationItem.Search.searchByNameListKey, characters
-            )
-            navController.popBackStack()
-        }
-    }
-
-    viewModel.characterList.collectAsState()
+    HandleNavigation(navController, characters, shouldNavigateBack)
 
     SearchBarComposable(
         placeholder = stringResource(R.string.search_by_name_placeholder),
@@ -40,5 +34,18 @@ fun SearchScreen(navController: NavController) {
         shouldNavigateBack = true
         viewModel.onSearchClick(it)
     }
+
+    HandleBackButton(navController)
 }
 
+@Composable
+fun HandleNavigation(navController: NavController, characters: List<Character>, shouldNavigateBack: Boolean) {
+    LaunchedEffect(characters, shouldNavigateBack) {
+        if (shouldNavigateBack && characters.isNotEmpty()) {
+            navController.previousBackStackEntry?.savedStateHandle?.set(
+                NavigationItem.Search.searchByNameListKey, characters
+            )
+            navController.popBackStack()
+        }
+    }
+}
