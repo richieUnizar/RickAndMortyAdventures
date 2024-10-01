@@ -20,11 +20,10 @@ import com.example.presentation_character_list.ui.CharactersComposable
 
 @Composable
 fun CharacterListScreen(viewModel: CharacterListViewModel, navController: NavController) {
-
     val display by viewModel.characterList.collectAsState()
     val hasError by viewModel.hasError.collectAsState()
-
     val filterByNameList = observeLiveData<List<Character>>(navController, NavigationItem.Search.searchByNameListKey)
+    val listState: LazyListState = rememberLazyListState()
 
     LaunchedEffect(filterByNameList) {
         filterByNameList.value?.let { characters ->
@@ -32,45 +31,56 @@ fun CharacterListScreen(viewModel: CharacterListViewModel, navController: NavCon
         }
     }
 
-    val listState: LazyListState = rememberLazyListState()
-
-    if(hasError){
+    if (hasError) {
         ErrorMessageComposable()
     } else {
-        TopBarScaffoldComposable(
+        CharacterListContent(
             navController = navController,
-            titleContent = {
-                Text(
-                    text = "Characters (${display.numberOfCharacters})",
-                    modifier = Modifier.fillMaxWidth()
-                )
-            },
-            showBackButton = false,
-            showSearchButton = true,
-            onSearchClicked = {
-                navController.navigate(NavigationItem.Search.route)
-            }
-        ) { paddingModifier ->
-            CharactersComposable(
-                listState = listState,
-                characters = display.characterList,
-                onItemClick = { character ->
-                    navController.navigate(NavigationItem.Detail.route + "/${character.id}")
-                },
-                onHeartIconClick = { isHeartSelected, character ->
-                    viewModel.onHeartIconClicked(isHeartSelected, character)
-                },
-                modifier = paddingModifier
-            )
+            display = display,
+            listState = listState,
+            viewModel = viewModel
+        )
+    }
+}
 
-            LaunchedEffect(listState) {
-                snapshotFlow { listState.firstVisibleItemIndex }
-                    .collect { index ->
-                        viewModel.loadNextPage(index)
-                    }
-            }
+@Composable
+fun CharacterListContent(
+    navController: NavController,
+    display: CharactersDisplay,
+    listState: LazyListState,
+    viewModel: CharacterListViewModel
+) {
+    TopBarScaffoldComposable(
+        navController = navController,
+        titleContent = {
+            Text(
+                text = "Characters (${display.numberOfCharacters})",
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        showBackButton = false,
+        showSearchButton = true,
+        onSearchClicked = {
+            navController.navigate(NavigationItem.Search.route)
+        }
+    ) { paddingModifier ->
+        CharactersComposable(
+            listState = listState,
+            characters = display.characterList,
+            onItemClick = { character ->
+                navController.navigate(NavigationItem.Detail.route + "/${character.id}")
+            },
+            onHeartIconClick = { isHeartSelected, character ->
+                viewModel.onHeartIconClicked(isHeartSelected, character)
+            },
+            modifier = paddingModifier
+        )
+
+        LaunchedEffect(listState) {
+            snapshotFlow { listState.firstVisibleItemIndex }
+                .collect { index ->
+                    viewModel.loadNextPage(index)
+                }
         }
     }
-
-
 }

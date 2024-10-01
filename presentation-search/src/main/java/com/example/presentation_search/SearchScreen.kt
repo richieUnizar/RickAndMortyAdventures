@@ -1,8 +1,5 @@
 package com.example.presentation_search
 
-import androidx.activity.compose.BackHandler
-import com.example.presentation_base.search_bar.SearchBarComposable
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -13,9 +10,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.presentation_base.navigation.NavigationItem
 import com.example.domain.characters.Character
 import com.example.presentation_base.back_button.HandleBackButton
+import com.example.presentation_base.navigation.NavigationItem
+import com.example.presentation_base.search_bar.SearchBarComposable
 
 @Composable
 fun SearchScreen(navController: NavController) {
@@ -25,8 +23,6 @@ fun SearchScreen(navController: NavController) {
     val characters by viewModel.characterList.collectAsState()
     var shouldNavigateBack by rememberSaveable { mutableStateOf(false) }
 
-    HandleNavigation(navController, characters, shouldNavigateBack)
-
     SearchBarComposable(
         placeholder = stringResource(R.string.search_by_name_placeholder),
         suggestionsList = familyMembers,
@@ -34,6 +30,8 @@ fun SearchScreen(navController: NavController) {
         shouldNavigateBack = true
         viewModel.onSearchClick(it)
     }
+
+    HandleNavigation(navController, characters, shouldNavigateBack)
 
     HandleBackButton(navController)
 }
