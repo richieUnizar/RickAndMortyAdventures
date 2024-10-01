@@ -12,6 +12,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.domain.model.Character
+import com.example.presentation_base.loading.LoadingIndicatorComposable
 import com.example.presentation_base.navigation.NavigationItem
 import com.example.presentation_base.navigation.observeLiveData
 import com.example.presentation_base.ui.error_screen.ErrorMessageComposable
@@ -20,9 +21,10 @@ import com.example.presentation_character_list.ui.CharactersComposable
 
 @Composable
 fun CharacterListScreen(viewModel: CharacterListViewModel, navController: NavController) {
+
     val display by viewModel.characterList.collectAsState()
-    val hasError by viewModel.hasError.collectAsState()
-    val filterByNameList = observeLiveData<List<Character>>(navController, NavigationItem.Search.searchByNameListKey)
+    val filterByNameList =
+        observeLiveData<List<Character>>(navController, NavigationItem.Search.searchByNameListKey)
     val listState: LazyListState = rememberLazyListState()
 
     LaunchedEffect(filterByNameList) {
@@ -31,16 +33,17 @@ fun CharacterListScreen(viewModel: CharacterListViewModel, navController: NavCon
         }
     }
 
-    if (hasError) {
-        ErrorMessageComposable()
-    } else {
-        CharacterListContent(
+    when {
+        display.loading -> LoadingIndicatorComposable()
+        display.hasError -> ErrorMessageComposable()
+        else -> CharacterListContent(
             navController = navController,
             display = display,
             listState = listState,
-            viewModel = viewModel
+            viewModel = viewModel,
         )
     }
+
 }
 
 @Composable

@@ -22,11 +22,9 @@ class CharacterListViewModel @Inject constructor(
     private val removeToFavouriteUseCase: RemoveToFavouriteUseCase,
 ) : ViewModel() {
 
-    private val _characterList = MutableStateFlow(CharactersDisplay(0, emptyList()))
+    private val _characterList =
+        MutableStateFlow(CharactersDisplay(0, emptyList(), true, false))
     val characterList: StateFlow<CharactersDisplay> = _characterList
-
-    private val _hasError = MutableStateFlow(false)
-    val hasError: StateFlow<Boolean> = _hasError
 
     private var pageToLoad = 1
     private var numberOfPages: Int? = null
@@ -45,33 +43,45 @@ class CharacterListViewModel @Inject constructor(
                 fetchCharacters(pageToLoad)
             }
         }
-
     }
 
     private fun fetchCharacters(page: Int) {
+
+        _characterList.value = _characterList.value.copy(loading = true)
+
         viewModelScope.launch(Dispatchers.IO) {
             charactersUseCase.getCharacters(page).fold(
                 onSuccess = { characters ->
-                    _hasError.value = false
-
-                    pageToLoad++
-                    numberOfPages = characters.info.numberOfPages
-                    this@CharacterListViewModel.charactersList = characters.characterList
-
-                    val display: CharactersDisplay = characters.toDisplay()
-
-                    val updatedCharacterList =
-                        _characterList.value.characterList + display.characterList
-
-                    _characterList.value = display.copy(
-                        characterList = updatedCharacterList
-                    )
+                    successToFetchCharacters(characters)
                 },
                 onFailure = { _ ->
-                    _hasError.value = true
+                    errorToFetchCharacters()
                 }
             )
         }
+    }
+
+    private fun successToFetchCharacters(characters: Characters) {
+        pageToLoad++
+        numberOfPages = characters.info.numberOfPages
+        this.charactersList = characters.characterList
+
+        val display: CharactersDisplay = characters.toDisplay()
+
+        val updatedCharacterList =
+            _characterList.value.characterList + display.characterList
+
+        _characterList.value = display.copy(
+            characterList = updatedCharacterList,
+            loading = false,
+            hasError = false
+        )
+    }
+
+    private fun errorToFetchCharacters() {
+        _characterList.value = _characterList.value.copy(
+            hasError = true
+        )
     }
 
     fun onHeartIconClicked(isHeartSelected: Boolean, characterDisplay: CharacterDisplay) {
@@ -91,7 +101,9 @@ class CharacterListViewModel @Inject constructor(
 
         _characterList.value = _characterList.value.copy(
             numberOfCharacters = display.count(),
-            characterList = display
+            characterList = display,
+            loading = false,
         )
     }
+
 }

@@ -2,10 +2,13 @@ package com.example.presentation_character_list
 
 import com.example.domain.model.Character
 import com.example.domain.model.Characters
+import java.lang.Error
 
 data class CharactersDisplay(
     var numberOfCharacters: Int,
     var characterList: List<CharacterDisplay>,
+    var loading: Boolean = false,
+    var hasError: Boolean = false
 )
 
 data class CharacterDisplay(
