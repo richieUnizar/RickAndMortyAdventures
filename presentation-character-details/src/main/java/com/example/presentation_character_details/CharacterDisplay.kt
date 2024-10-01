@@ -1,6 +1,6 @@
 package com.example.presentation_character_details
 
-import com.example.domain.characters.Character
+import com.example.domain.model.Character
 
 data class CharacterDisplay(
     val id: Int,

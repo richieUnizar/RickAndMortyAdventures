@@ -1,7 +1,7 @@
 package com.example.domain.character
 
 import com.example.common.Either
-import com.example.domain.characters.Character
+import com.example.domain.model.Character
 
 interface CharacterRepository {
 

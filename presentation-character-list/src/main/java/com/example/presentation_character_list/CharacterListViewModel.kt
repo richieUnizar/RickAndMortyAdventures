@@ -2,11 +2,11 @@ package com.example.presentation_character_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.Favourites.AddToFavouriteUseCase
-import com.example.domain.Favourites.AddToFavouriteUseCase.*
-import com.example.domain.Favourites.RemoveToFavouriteUseCase
-import com.example.domain.characters.Character
-import com.example.domain.characters.Characters
+import com.example.domain.Favourites.add.AddToFavouriteUseCase
+import com.example.domain.Favourites.add.AddToFavouriteUseCase.*
+import com.example.domain.Favourites.remove.RemoveToFavouriteUseCase
+import com.example.domain.model.Character
+import com.example.domain.model.Characters
 import com.example.domain.characters.GetCharactersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

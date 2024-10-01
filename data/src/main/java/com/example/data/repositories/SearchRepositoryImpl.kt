@@ -1,11 +1,9 @@
 package com.example.data.repositories
 
 import com.example.common.Either
-import com.example.data.toDomain
-import com.example.data_source_rest.character.CharacterDataSource
-import com.example.data_source_rest.model.CharactersDTO
+import com.example.data.mapper.toDomain
 import com.example.data_source_rest.search.SearchDataSource
-import com.example.domain.characters.Characters
+import com.example.domain.model.Characters
 import com.example.domain.search.SearchRepository
 
 class SearchRepositoryImpl(

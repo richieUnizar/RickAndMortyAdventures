@@ -1,7 +1,7 @@
 package com.example.presentation_character_list
 
-import com.example.domain.characters.Character
-import com.example.domain.characters.Characters
+import com.example.domain.model.Character
+import com.example.domain.model.Characters
 
 data class CharactersDisplay(
     var numberOfCharacters: Int,

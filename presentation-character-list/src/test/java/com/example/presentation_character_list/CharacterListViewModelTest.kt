@@ -1,12 +1,12 @@
 package com.example.presentation_character_list
 
 import com.example.common.Either
-import com.example.domain.Favourites.AddToFavouriteUseCase
-import com.example.domain.Favourites.RemoveToFavouriteUseCase
-import com.example.domain.characters.Character
-import com.example.domain.characters.Characters
+import com.example.domain.Favourites.add.AddToFavouriteUseCase
+import com.example.domain.Favourites.remove.RemoveToFavouriteUseCase
+import com.example.domain.model.Character
+import com.example.domain.model.Characters
 import com.example.domain.characters.GetCharactersUseCase
-import com.example.domain.characters.Info
+import com.example.domain.model.Info
 import io.mockk.Runs
 import io.mockk.clearAllMocks
 import io.mockk.coEvery

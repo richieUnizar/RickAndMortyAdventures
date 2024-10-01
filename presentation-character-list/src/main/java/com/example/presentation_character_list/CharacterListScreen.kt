@@ -11,7 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.example.domain.characters.Character
+import com.example.domain.model.Character
 import com.example.presentation_base.navigation.NavigationItem
 import com.example.presentation_base.navigation.observeLiveData
 import com.example.presentation_base.ui.error_screen.ErrorMessageComposable

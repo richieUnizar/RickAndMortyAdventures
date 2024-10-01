@@ -1,6 +1,6 @@
-package com.example.domain.Favourites
+package com.example.domain.Favourites.add
 
-import com.example.domain.characters.Character
+import com.example.domain.model.Character
 
 interface AddToFavouritesRepository {
 

@@ -1,9 +1,9 @@
 package com.example.presentation_favourite_characters
 
 import com.example.common.Either
-import com.example.domain.Favourites.GetFavouriteCharactersUseCase
-import com.example.domain.Favourites.RemoveToFavouriteUseCase
-import com.example.domain.characters.Character
+import com.example.domain.Favourites.get_list.GetFavouriteCharactersUseCase
+import com.example.domain.Favourites.remove.RemoveToFavouriteUseCase
+import com.example.domain.Favourites.model.FavouriteCharacter
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -56,7 +56,7 @@ class FavouriteCharactersViewModelTest {
 
             advanceUntilIdle()
 
-            assertEquals(CHARACTER_LIST.toDisplay(), viewModel.charactersDisplay.first())
+            assertEquals(CHARACTER_LIST.toFavouriteCharactersDisplay(), viewModel.charactersDisplay.first())
         }
 
     @Test
@@ -84,8 +84,8 @@ class FavouriteCharactersViewModelTest {
     companion object {
 
         val CHARACTER_LIST = listOf(
-            Character(id = 1, name = "Rick", status = "Alive", species = "Human", image = "image1"),
-            Character(id = 2, name = "Morty", status = "Alive", species = "Human", image = "image2")
+            FavouriteCharacter(id = 1, name = "Rick", status = "Alive", species = "Human", image = "image1"),
+            FavouriteCharacter(id = 2, name = "Morty", status = "Alive", species = "Human", image = "image2")
         )
 
     }

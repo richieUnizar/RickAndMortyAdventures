@@ -10,10 +10,9 @@ import com.example.data_source_rest.character.CharacterDataSource
 import com.example.data_source_rest.characters.CharactersDataSource
 import com.example.data_source_rest.search.SearchDataSource
 import com.example.data_source_room.dao.CharacterDao
-import com.example.domain.Favourites.AddToFavouritesRepository
-import com.example.domain.Favourites.FavouriteCharactersRepository
-import com.example.domain.Favourites.GetFavouriteCharactersUseCase
-import com.example.domain.Favourites.RemoveToFavouritesRepository
+import com.example.domain.Favourites.add.AddToFavouritesRepository
+import com.example.domain.Favourites.get_list.FavouriteCharactersRepository
+import com.example.domain.Favourites.remove.RemoveToFavouritesRepository
 import com.example.domain.character.CharacterRepository
 import com.example.domain.characters.CharactersRepository
 import com.example.domain.search.SearchRepository

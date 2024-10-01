@@ -1,4 +1,4 @@
-package com.example.domain.Favourites
+package com.example.domain.Favourites.remove
 
 import javax.inject.Inject
 

@@ -1,7 +1,7 @@
-package com.example.domain.Favourites
+package com.example.domain.Favourites.add
 
 import javax.inject.Inject
-import com.example.domain.characters.Character
+import com.example.domain.model.Character
 
 class AddToFavouriteUseCase @Inject constructor(
     private val addToFavouritesRepository: AddToFavouritesRepository

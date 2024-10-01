@@ -1,6 +1,7 @@
 package com.example.domain.characters
 
 import com.example.common.Either
+import com.example.domain.model.Characters
 import javax.inject.Inject
 
 

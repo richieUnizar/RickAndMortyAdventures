@@ -10,7 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.domain.characters.Character
+import com.example.domain.model.Character
 import com.example.presentation_base.back_button.HandleBackButton
 import com.example.presentation_base.navigation.NavigationItem
 import com.example.presentation_base.search_bar.SearchBarComposable

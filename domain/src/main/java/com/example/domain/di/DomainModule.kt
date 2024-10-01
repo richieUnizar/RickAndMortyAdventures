@@ -1,11 +1,11 @@
 package com.example.domain.di
 
-import com.example.domain.Favourites.FavouriteCharactersRepository
-import com.example.domain.Favourites.AddToFavouriteUseCase
-import com.example.domain.Favourites.AddToFavouritesRepository
-import com.example.domain.Favourites.GetFavouriteCharactersUseCase
-import com.example.domain.Favourites.RemoveToFavouriteUseCase
-import com.example.domain.Favourites.RemoveToFavouritesRepository
+import com.example.domain.Favourites.get_list.FavouriteCharactersRepository
+import com.example.domain.Favourites.add.AddToFavouriteUseCase
+import com.example.domain.Favourites.add.AddToFavouritesRepository
+import com.example.domain.Favourites.get_list.GetFavouriteCharactersUseCase
+import com.example.domain.Favourites.remove.RemoveToFavouriteUseCase
+import com.example.domain.Favourites.remove.RemoveToFavouritesRepository
 import com.example.domain.character.CharacterRepository
 import com.example.domain.character.GetCharacterUseCase
 import com.example.domain.characters.CharactersRepository

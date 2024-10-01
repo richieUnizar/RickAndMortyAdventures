@@ -3,7 +3,7 @@ package com.example.presentation_search
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.characters.Character
+import com.example.domain.model.Character
 import com.example.domain.search.GetSearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

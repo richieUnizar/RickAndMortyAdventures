@@ -2,8 +2,8 @@ package com.example.data.repositories
 
 import com.example.data_source_room.dao.CharacterDao
 import com.example.data_source_room.data.CharacterEntity
-import com.example.domain.Favourites.AddToFavouritesRepository
-import com.example.domain.characters.Character
+import com.example.domain.Favourites.add.AddToFavouritesRepository
+import com.example.domain.model.Character
 import javax.inject.Inject
 
 class AddToFavouritesRepositoryImpl @Inject constructor(

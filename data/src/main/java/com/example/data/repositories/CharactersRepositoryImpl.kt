@@ -1,11 +1,11 @@
 package com.example.data.repositories
 
 import com.example.common.Either
-import com.example.data.toDomain
+import com.example.data.mapper.toDomain
 import com.example.data_source_rest.characters.CharactersDataSource
-import com.example.domain.Favourites.FavouriteCharactersRepository
-import com.example.domain.characters.Character
-import com.example.domain.characters.Characters
+import com.example.domain.Favourites.get_list.FavouriteCharactersRepository
+import com.example.domain.Favourites.model.FavouriteCharacter
+import com.example.domain.model.Characters
 import com.example.domain.characters.CharactersRepository
 
 class CharactersRepositoryImpl(
@@ -34,7 +34,7 @@ class CharactersRepositoryImpl(
 
     private fun getCharacterWithFavourites(
         characters: Characters,
-        favourites: List<Character>
+        favourites: List<FavouriteCharacter>
     ): Characters {
         return characters.copy(
             characterList = characters.characterList.map { safeCharacter ->
