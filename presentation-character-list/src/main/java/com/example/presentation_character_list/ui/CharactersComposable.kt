@@ -79,8 +79,6 @@ fun CharacterCard(
     onItemClick: (CharacterDisplay) -> Unit,
     onHeartIconClick: (isHeartSelected: Boolean, CharacterDisplay) -> Unit
 ) {
-    var isFavorite by remember { mutableStateOf(character.isInFavourites) }
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -140,17 +138,17 @@ fun CharacterCard(
             }
             IconButton(
                 onClick = {
-                    isFavorite = !isFavorite
-                    onHeartIconClick(isFavorite, character)
+
+                    onHeartIconClick(!character.isInFavourites, character)
                 },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .testTag(HEART_ICON_TEST_TAG)
             ) {
                 Icon(
-                    imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                    imageVector = if (character.isInFavourites) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                     contentDescription = null,
-                    tint = if (isFavorite) Color.Red else Color.Black
+                    tint = if (character.isInFavourites) Color.Red else Color.Black
                 )
             }
         }

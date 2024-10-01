@@ -97,11 +97,9 @@ class CharacterListViewModel @Inject constructor(
     }
 
     fun updateCharacterList(characters: List<Character>) {
-        val display = characters.toDisplay()
-
         _characterList.value = _characterList.value.copy(
-            numberOfCharacters = display.count(),
-            characterList = display,
+            numberOfCharacters = characters.count(),
+            characterList = characters.toDisplay(),
             loading = false,
         )
     }
