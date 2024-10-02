@@ -15,16 +15,14 @@ class CharactersRepositoryImpl(
     override suspend fun getCharacters(page: Int): Either<Throwable, Characters> {
         val result = charactersDataSource.getCharacters(page)
 
-        return if (result.isRight()) {
-            val characters = result.getRightValue()!!.let { charactersDTO ->
-                charactersDTO.toDomain()
+        return result.fold(
+            onSuccess = { charactersDTO ->
+                Either.Success(charactersDTO.toDomain())
+            },
+            onFailure = { error ->
+                Either.Error(error)
             }
-
-            Either.Success(characters)
-        } else {
-            val error = result.getLeftValue()!!
-            Either.Error(error)
-        }
+        )
     }
 
 }

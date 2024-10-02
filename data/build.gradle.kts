@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.android.jupiter)
     id("kotlin-kapt")
 }
 
@@ -32,17 +33,25 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
     hilt {
-        enableAggregatingTask = true
+        enableAggregatingTask = false
+    }
+    junitPlatform {
+        instrumentationTests.includeExtensions.set(true)
     }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
@@ -50,10 +59,31 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 
+    // Mockk
+    androidTestImplementation(libs.mockk.android)
+    testImplementation(libs.mockk)
+    // JUnit 5
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.junit.jupiter.params)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    // Jetpack Compose Test
+    androidTestImplementation(libs.android.compose.ui.test)
+    debugImplementation(libs.android.compose.ui.test.manifest)
+    // Coroutines test library
+    testImplementation(libs.corroutine.test)
+
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+
     implementation(project(":common"))
     implementation(project(":domain"))
     implementation(project(":data-source-rest"))
     implementation(project(":data-source-room"))
+}
+
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 kapt {
