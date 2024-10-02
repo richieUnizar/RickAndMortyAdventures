@@ -115,6 +115,8 @@ class CharacterListViewModel @Inject constructor(
 
 
     fun updateCharacterList(characters: List<Character>) {
+        charactersList = characters
+
         _characterList.value = _characterList.value.copy(
             numberOfCharacters = characters.count(),
             characterList = characters.toDisplay(),
