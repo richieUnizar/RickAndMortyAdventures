@@ -36,8 +36,7 @@ fun BottomNavigationComposable(navController: NavHostController) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination?.route
 
-    val showBottomBar = currentDestination != NavigationItem.Detail.route + "/{characterId}"
-
+    val showBottomBar = tabBarItems.any { it.title == currentDestination }
 
     Scaffold(
         bottomBar = {
