@@ -86,6 +86,9 @@ class CharacterListViewModel @Inject constructor(
 
     fun onHeartIconClicked(isHeartSelected: Boolean, characterDisplay: CharacterDisplay) {
         viewModelScope.launch(Dispatchers.IO) {
+
+            updateCharacterFavourites(characterDisplay, isHeartSelected)
+
             if (isHeartSelected) {
                 charactersList?.find { it.id == characterDisplay.id }?.let { safeCharacter ->
                     favouriteCharacterUseCase.addCharacterToFavorites(Params(safeCharacter))
@@ -95,6 +98,21 @@ class CharacterListViewModel @Inject constructor(
             }
         }
     }
+
+    fun updateCharacterFavourites(characterDisplay: CharacterDisplay, isHeartSelected: Boolean) {
+        val updatedCharacterList = _characterList.value.characterList.map { character ->
+            if (character.id == characterDisplay.id) {
+                character.copy(isInFavourites = isHeartSelected)
+            } else {
+                character
+            }
+        }
+
+        _characterList.value = _characterList.value.copy(
+            characterList = updatedCharacterList
+        )
+    }
+
 
     fun updateCharacterList(characters: List<Character>) {
         _characterList.value = _characterList.value.copy(
