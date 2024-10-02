@@ -34,8 +34,7 @@ class SearchViewModel @Inject constructor(
                 onSuccess = { characters ->
                     _characterList.value = characters.characterList
                 },
-                onFailure = { error ->
-                    Log.d("RickAndMorty", error.message ?: "Unknown error")
+                onFailure = { _ ->
                     _characterList.value = emptyList()
                 }
             )
