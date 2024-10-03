@@ -33,9 +33,7 @@ class FavouriteCharactersViewModelTest {
 
     @BeforeEach
     fun setUp() {
-        coEvery { getFavouriteCharactersUseCase.getFavoriteCharacters() } returns Either.Success(
-            CHARACTER_LIST
-        )
+        coEvery { getFavouriteCharactersUseCase.run() } returns Either.Success(CHARACTER_LIST)
 
         viewModel = FavouriteCharactersViewModel(
             getFavouriteCharactersUseCase = getFavouriteCharactersUseCase,

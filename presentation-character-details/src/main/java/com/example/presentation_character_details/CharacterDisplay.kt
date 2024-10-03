@@ -8,6 +8,7 @@ data class CharacterDisplay(
     val status: String,
     val species: String,
     val image: String,
+    val hasError: Boolean,
 )
 
 fun Character.toDisplay() = CharacterDisplay(
@@ -15,5 +16,6 @@ fun Character.toDisplay() = CharacterDisplay(
     name = this.name,
     status = this.status,
     species = this.species,
-    image = this.image
+    image = this.image,
+    hasError = false
 )

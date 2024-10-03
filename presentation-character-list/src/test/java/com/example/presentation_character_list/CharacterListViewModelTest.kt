@@ -6,6 +6,7 @@ import com.example.domain.Favourites.remove.RemoveToFavouriteUseCase
 import com.example.domain.model.Character
 import com.example.domain.model.Characters
 import com.example.domain.characters.GetCharactersUseCase
+import com.example.domain.characters.GetCharactersUseCase.*
 import com.example.domain.model.Info
 import com.example.domain.model.Location
 import com.example.domain.model.Origin
@@ -24,6 +25,8 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -45,7 +48,7 @@ class CharacterListViewModelTest {
         val characters =
             Characters(Info(numberOfCharacters = 20, numberOfPages = 2), generateCharacterList(20))
 
-        coEvery { charactersUseCase.getCharacters(any()) } returns Either.Success(characters)
+        coEvery { charactersUseCase.run(any()) } returns Either.Success(characters)
 
         viewModel = CharacterListViewModel(
             charactersUseCase,
@@ -73,7 +76,7 @@ class CharacterListViewModelTest {
         assertEquals(20, charactersDisplayState.size)
 
         coVerify(exactly = 1) {
-            charactersUseCase.getCharacters(1)
+            charactersUseCase.run(Params(1))
         }
     }
 
@@ -88,8 +91,8 @@ class CharacterListViewModelTest {
             advanceUntilIdle()
 
             coVerify(exactly = 1) {
-                charactersUseCase.getCharacters(1)
-                charactersUseCase.getCharacters(2)
+                charactersUseCase.run(Params(1))
+                charactersUseCase.run(Params(2))
             }
         }
 
@@ -103,7 +106,7 @@ class CharacterListViewModelTest {
                 id = 1,
                 name = "Character 1",
                 status = "Alive",
-                species = "Alien",
+                species = "Human",
                 image = "image1",
                 isInFavourites = false
             )
@@ -116,6 +119,10 @@ class CharacterListViewModelTest {
 
             advanceUntilIdle()
 
+            val firstDisplay = viewModel.characterList.getOrAwaitValue().characterList.first()
+
+            assertTrue(firstDisplay.isInFavourites)
+
             coVerify(exactly = 1) {
                 favouriteCharacterUseCase.addCharacterToFavorites(expectedCharacterParam)
             }
@@ -126,7 +133,7 @@ class CharacterListViewModelTest {
         runTest {
             val characterDisplay = CharacterDisplay(
                 id = 1,
-                name = "Rick",
+                name = "Character 1",
                 status = "Alive",
                 species = "Human",
                 image = "image1",
@@ -140,6 +147,10 @@ class CharacterListViewModelTest {
             viewModel.onHeartIconClicked(false, characterDisplay)
 
             advanceUntilIdle()
+
+            val firstDisplay = viewModel.characterList.first().characterList.first()
+
+            assertFalse(firstDisplay.isInFavourites)
 
             coVerify(exactly = 1) { removeToFavouriteUseCase.removeCharacterFromFavorites(1) }
         }
