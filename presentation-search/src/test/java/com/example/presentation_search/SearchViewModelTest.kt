@@ -7,6 +7,7 @@ import com.example.domain.model.Info
 import com.example.domain.model.Location
 import com.example.domain.model.Origin
 import com.example.domain.search.GetSearchUseCase
+import com.example.domain.search.GetSearchUseCase.Params
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.first
@@ -44,7 +45,7 @@ class SearchViewModelTest {
         runTest {
             val name = "Rick"
 
-            coEvery { getSearchUseCase.searchByName(name) } returns Either.Success(
+            coEvery { getSearchUseCase.run(Params(name)) } returns Either.Success(
                 character
             )
 
@@ -61,7 +62,7 @@ class SearchViewModelTest {
         runTest {
             val error = Throwable("Character not found")
 
-            coEvery { getSearchUseCase.searchByName("InvalidName") } returns Either.Error(error)
+            coEvery { getSearchUseCase.run(Params("InvalidName")) } returns Either.Error(error)
 
             viewModel.onSearchClick("InvalidName")
 
