@@ -99,7 +99,7 @@ class CharacterListViewModel @Inject constructor(
         }
     }
 
-    fun updateCharacterFavourites(characterDisplay: CharacterDisplay, isHeartSelected: Boolean) {
+    private fun updateCharacterFavourites(characterDisplay: CharacterDisplay, isHeartSelected: Boolean) {
         val updatedCharacterList = _characterList.value.characterList.map { character ->
             if (character.id == characterDisplay.id) {
                 character.copy(isInFavourites = isHeartSelected)

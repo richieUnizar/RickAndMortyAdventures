@@ -7,6 +7,7 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import com.example.presentation_character_list.CharacterDisplay
 import com.example.presentation_character_list.ui.CharacterListTestTags.CHARACTER_LIST_TEST_TAG
@@ -35,8 +36,7 @@ class CharactersComposableKtTest {
             }
         }
 
-        composeTestRule.onAllNodesWithTag(CHARACTER_LIST_TEST_TAG, useUnmergedTree = true)
-            .onFirst()
+        composeTestRule.onNodeWithTag(CHARACTER_LIST_TEST_TAG, useUnmergedTree = true)
             .assertIsDisplayed()
 
         composeTestRule.onAllNodesWithTag(NAME_TEST_TAG, useUnmergedTree = true)
