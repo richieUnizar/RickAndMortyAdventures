@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.Character
 import com.example.domain.search.GetSearchUseCase
+import com.example.domain.search.GetSearchUseCase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +31,7 @@ class SearchViewModel @Inject constructor(
 
     fun onSearchClick(name: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            getSearchUseCase.searchByName(name).fold(
+            getSearchUseCase.run(Params(name)).fold(
                 onSuccess = { characters ->
                     _characterList.value = characters.characterList
                 },

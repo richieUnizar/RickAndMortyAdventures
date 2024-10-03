@@ -30,7 +30,7 @@ class FavouriteCharactersViewModel @Inject constructor(
 
     private fun fetchFavouriteCharacters() {
         viewModelScope.launch(Dispatchers.IO) {
-            getFavouriteCharactersUseCase.getFavoriteCharacters().fold(
+            getFavouriteCharactersUseCase.run().fold(
                 onSuccess = { characters ->
                     this@FavouriteCharactersViewModel.characters = characters
 

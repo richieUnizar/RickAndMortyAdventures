@@ -29,7 +29,7 @@ class GetFavouriteCharactersUseCaseTest {
 
             coEvery { repository.getFavoriteCharacters() } returns Either.Success(favouriteList)
 
-            val result = useCase.getFavoriteCharacters()
+            val result = useCase.run()
 
             assertEquals(favouriteList, result.getRightValue())
         }
@@ -41,7 +41,7 @@ class GetFavouriteCharactersUseCaseTest {
 
             coEvery { repository.getFavoriteCharacters() } returns Either.Error(error)
 
-            val result = useCase.getFavoriteCharacters()
+            val result = useCase.run()
 
             assertEquals(error, result.getLeftValue())
         }

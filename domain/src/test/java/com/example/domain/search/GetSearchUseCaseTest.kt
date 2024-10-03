@@ -8,6 +8,7 @@ import com.example.domain.model.Characters
 import com.example.domain.model.Info
 import com.example.domain.model.Location
 import com.example.domain.model.Origin
+import com.example.domain.search.GetSearchUseCase.*
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -48,9 +49,9 @@ class GetSearchUseCaseTest {
         val character = createCharacter(false)
 
         coEvery { searchRepository.getCharacterByName(NAME) } returns Either.Success(character)
-        coEvery { favouriteCharactersUseCase.getFavoriteCharacters() } returns favouriteCharacters
+        coEvery { favouriteCharactersUseCase.run() } returns favouriteCharacters
 
-        val result = getSearchUseCase.searchByName(NAME)
+        val result = getSearchUseCase.run(Params(NAME))
 
         Assertions.assertEquals(expectedCharacters, result.getRightValue())
     }
@@ -61,11 +62,9 @@ class GetSearchUseCaseTest {
             val error = Throwable("Error getting characters")
 
             coEvery { searchRepository.getCharacterByName(NAME) } returns Either.Error(error)
-            coEvery { favouriteCharactersUseCase.getFavoriteCharacters() } returns Either.Success(
-                emptyList()
-            )
+            coEvery { favouriteCharactersUseCase.run() } returns Either.Success(emptyList())
 
-            val result = getSearchUseCase.searchByName(NAME)
+            val result = getSearchUseCase.run(Params(NAME))
 
             Assertions.assertEquals(error, result.getLeftValue())
         }
@@ -78,10 +77,10 @@ class GetSearchUseCaseTest {
             coEvery { searchRepository.getCharacterByName(NAME) } returns
                     Either.Success(createCharacter())
 
-            coEvery { favouriteCharactersUseCase.getFavoriteCharacters() } returns
+            coEvery { favouriteCharactersUseCase.run() } returns
                     Either.Error(Throwable("Error getting favourites characters"))
 
-            val result = getSearchUseCase.searchByName(NAME)
+            val result = getSearchUseCase.run(Params(NAME))
 
             Assertions.assertEquals(expectedCharacter, result.getRightValue())
         }

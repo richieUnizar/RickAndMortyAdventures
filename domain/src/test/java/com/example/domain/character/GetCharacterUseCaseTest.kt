@@ -1,7 +1,9 @@
 package com.example.domain.character
 
 import com.example.common.Either
+import com.example.domain.character.GetCharacterUseCase.Params
 import com.example.domain.model.Character
+import com.example.domain.search.GetSearchUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -21,7 +23,7 @@ class GetCharacterUseCaseTest {
 
             coEvery { repository.getCharacter(CHARACTER_ID) } returns Either.Success(character)
 
-            val result = useCase.getCharacter(CHARACTER_ID)
+            val result = useCase.run(Params(CHARACTER_ID))
 
             assertEquals(character, result.getRightValue())
         }
@@ -34,7 +36,7 @@ class GetCharacterUseCaseTest {
             coEvery { repository.getCharacter(CHARACTER_ID) } returns Either.Error(error)
 
 
-            val result = useCase.getCharacter(CHARACTER_ID)
+            val result = useCase.run(Params(CHARACTER_ID))
 
             assertEquals(error, result.getLeftValue())
         }

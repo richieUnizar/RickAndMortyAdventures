@@ -3,7 +3,10 @@ package com.example.domain.search
 import com.example.common.Either
 import com.example.domain.Favourites.get_list.GetFavouriteCharactersUseCase
 import com.example.domain.Favourites.model.FavouriteCharacter
+import com.example.domain.characters.GetCharactersUseCase
 import com.example.domain.model.Characters
+import com.example.domain.search.GetSearchUseCase.Params
+import com.example.domain.utils.UseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
@@ -11,15 +14,15 @@ import javax.inject.Inject
 class GetSearchUseCase @Inject constructor(
     private val searchRepository: SearchRepository,
     private val favouriteCharactersUseCase: GetFavouriteCharactersUseCase,
-) {
+) : UseCase<Params, Throwable, Characters> {
 
-    suspend fun searchByName(name: String): Either<Throwable, Characters> {
+    override suspend fun run(params: Params): Either<Throwable, Characters> {
         return try {
             coroutineScope {
                 val charactersResult =
-                    async { searchRepository.getCharacterByName(name) }.await()
+                    async { searchRepository.getCharacterByName(params.name) }.await()
                 val favouritesResult =
-                    async { favouriteCharactersUseCase.getFavoriteCharacters() }.await()
+                    async { favouriteCharactersUseCase.run() }.await()
 
                 combineResults(charactersResult, favouritesResult)
             }
@@ -57,5 +60,9 @@ class GetSearchUseCase @Inject constructor(
             }
         )
     }
+
+    data class Params(
+        val name: String
+    )
 }
 

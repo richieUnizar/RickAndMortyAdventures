@@ -3,6 +3,7 @@ package com.example.domain.characters
 import com.example.common.Either
 import com.example.domain.Favourites.get_list.GetFavouriteCharactersUseCase
 import com.example.domain.Favourites.model.FavouriteCharacter
+import com.example.domain.characters.GetCharactersUseCase.Params
 import com.example.domain.model.Character
 import com.example.domain.model.Characters
 import com.example.domain.model.Info
@@ -47,9 +48,9 @@ class GetCharactersUseCaseTest {
         val character = createCharacter(false)
 
         coEvery { characterRepository.getCharacters(PAGE_NUMBER) } returns Either.Success(character)
-        coEvery { favouriteCharactersUseCase.getFavoriteCharacters() } returns favouriteCharacters
+        coEvery { favouriteCharactersUseCase.run() } returns favouriteCharacters
 
-        val result = getCharactersUseCase.getCharacters(PAGE_NUMBER)
+        val result = getCharactersUseCase.run(Params(PAGE_NUMBER))
 
         Assertions.assertEquals(expectedCharacters, result.getRightValue())
     }
@@ -60,11 +61,9 @@ class GetCharactersUseCaseTest {
             val error = Throwable("Error getting characters")
 
             coEvery { characterRepository.getCharacters(PAGE_NUMBER) } returns Either.Error(error)
-            coEvery { favouriteCharactersUseCase.getFavoriteCharacters() } returns Either.Success(
-                emptyList()
-            )
+            coEvery { favouriteCharactersUseCase.run() } returns Either.Success(emptyList())
 
-            val result = getCharactersUseCase.getCharacters(PAGE_NUMBER)
+            val result = getCharactersUseCase.run(Params(PAGE_NUMBER))
 
             Assertions.assertEquals(error, result.getLeftValue())
         }
@@ -77,10 +76,10 @@ class GetCharactersUseCaseTest {
             coEvery { characterRepository.getCharacters(PAGE_NUMBER) } returns
                     Either.Success(createCharacter())
 
-            coEvery { favouriteCharactersUseCase.getFavoriteCharacters() } returns
+            coEvery { favouriteCharactersUseCase.run() } returns
                     Either.Error(Throwable("Error getting favourites characters"))
 
-            val result = getCharactersUseCase.getCharacters(PAGE_NUMBER)
+            val result = getCharactersUseCase.run(Params(PAGE_NUMBER))
 
             Assertions.assertEquals(expectedCharacter, result.getRightValue())
         }

@@ -3,6 +3,7 @@ package com.example.presentation_character_details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.character.GetCharacterUseCase
+import com.example.domain.character.GetCharacterUseCase.Params
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +24,7 @@ class CharacterDetailsViewModel @Inject constructor(
 
     fun fetchCharacters(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            characterUseCase.getCharacter(id).fold(
+            characterUseCase.run(Params(id)).fold(
                 onSuccess = { character ->
                     _hasError.value = false
                     _characterDetail.value = character.toDisplay()

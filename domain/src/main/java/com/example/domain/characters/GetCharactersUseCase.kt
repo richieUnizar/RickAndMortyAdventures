@@ -3,7 +3,9 @@ package com.example.domain.characters
 import com.example.common.Either
 import com.example.domain.Favourites.get_list.GetFavouriteCharactersUseCase
 import com.example.domain.Favourites.model.FavouriteCharacter
+import com.example.domain.characters.GetCharactersUseCase.Params
 import com.example.domain.model.Characters
+import com.example.domain.utils.UseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
@@ -12,15 +14,15 @@ import javax.inject.Inject
 class GetCharactersUseCase @Inject constructor(
     private val characterRepository: CharactersRepository,
     private val favouriteCharactersUseCase: GetFavouriteCharactersUseCase,
-) {
+) : UseCase<Params, Throwable, Characters> {
 
-    suspend fun getCharacters(page: Int): Either<Throwable, Characters> {
+    override suspend fun run(params: Params): Either<Throwable, Characters> {
         return try {
             coroutineScope {
                 val charactersResult =
-                    async { characterRepository.getCharacters(page) }.await()
+                    async { characterRepository.getCharacters(params.page) }.await()
                 val favouritesResult =
-                    async { favouriteCharactersUseCase.getFavoriteCharacters() }.await()
+                    async { favouriteCharactersUseCase.run() }.await()
 
                 combineResults(charactersResult, favouritesResult)
             }
@@ -59,4 +61,8 @@ class GetCharactersUseCase @Inject constructor(
             }
         )
     }
+
+    data class Params(
+        val page: Int
+    )
 }

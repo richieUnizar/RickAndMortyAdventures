@@ -8,6 +8,7 @@ import com.example.domain.Favourites.remove.RemoveToFavouriteUseCase
 import com.example.domain.model.Character
 import com.example.domain.model.Characters
 import com.example.domain.characters.GetCharactersUseCase
+import com.example.domain.characters.GetCharactersUseCase.Params
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,7 +51,7 @@ class CharacterListViewModel @Inject constructor(
         _characterList.value = _characterList.value.copy(loading = true)
 
         viewModelScope.launch(Dispatchers.IO) {
-            charactersUseCase.getCharacters(page).fold(
+            charactersUseCase.run(Params(page)).fold(
                 onSuccess = { characters ->
                     successToFetchCharacters(characters)
                 },
@@ -99,7 +100,10 @@ class CharacterListViewModel @Inject constructor(
         }
     }
 
-    private fun updateCharacterFavourites(characterDisplay: CharacterDisplay, isHeartSelected: Boolean) {
+    private fun updateCharacterFavourites(
+        characterDisplay: CharacterDisplay,
+        isHeartSelected: Boolean
+    ) {
         val updatedCharacterList = _characterList.value.characterList.map { character ->
             if (character.id == characterDisplay.id) {
                 character.copy(isInFavourites = isHeartSelected)
