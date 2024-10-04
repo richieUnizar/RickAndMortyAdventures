@@ -10,11 +10,12 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import com.example.presentation_base.alert_dialog.AlertDialogTestTags.CONFIRM_BUTTON_TEST_TAG
-import com.example.presentation_base.alert_dialog.AlertDialogTestTags.DISMISS_BUTTON_TEST_TAG
-import com.example.presentation_base.alert_dialog.AlertDialogTestTags.ICON_TEST_TAG
-import com.example.presentation_base.alert_dialog.AlertDialogTestTags.TEXT_TEST_TAG
-import com.example.presentation_base.alert_dialog.AlertDialogTestTags.TITLE_TEST_TAG
+import com.example.presentation_base.ui.alert_dialog.AlertDialogComposable
+import com.example.presentation_base.ui.alert_dialog.AlertDialogTestTags.CONFIRM_BUTTON_TEST_TAG
+import com.example.presentation_base.ui.alert_dialog.AlertDialogTestTags.DISMISS_BUTTON_TEST_TAG
+import com.example.presentation_base.ui.alert_dialog.AlertDialogTestTags.ICON_TEST_TAG
+import com.example.presentation_base.ui.alert_dialog.AlertDialogTestTags.TEXT_TEST_TAG
+import com.example.presentation_base.ui.alert_dialog.AlertDialogTestTags.TITLE_TEST_TAG
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test

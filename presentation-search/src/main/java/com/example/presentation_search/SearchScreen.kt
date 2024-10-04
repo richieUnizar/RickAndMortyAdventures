@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import com.example.domain.model.Character
 import com.example.presentation_base.back_button.HandleBackButton
 import com.example.presentation_base.navigation.NavigationItem
-import com.example.presentation_base.search_bar.SearchBarComposable
+import com.example.presentation_base.ui.search_bar.SearchBarComposable
 
 @Composable
 fun SearchScreen(navController: NavController) {

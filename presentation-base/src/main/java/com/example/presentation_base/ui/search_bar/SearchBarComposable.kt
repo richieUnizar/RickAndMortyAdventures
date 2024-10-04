@@ -1,4 +1,4 @@
-package com.example.presentation_base.search_bar
+package com.example.presentation_base.ui.search_bar
 
 
 import androidx.compose.foundation.clickable
@@ -37,8 +37,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.presentation_base.search_bar.SearchBarTestTags.PLACEHOLDER_TEST_TAG
-import com.example.presentation_base.search_bar.SearchBarTestTags.SUGGESTIONS_LIST_TEST_TAG
+import com.example.presentation_base.ui.search_bar.SearchBarTestTags.PLACEHOLDER_TEST_TAG
+import com.example.presentation_base.ui.search_bar.SearchBarTestTags.SUGGESTIONS_LIST_TEST_TAG
 
 object SearchBarTestTags {
     const val PLACEHOLDER_TEST_TAG = "PlaceholderTestTab"

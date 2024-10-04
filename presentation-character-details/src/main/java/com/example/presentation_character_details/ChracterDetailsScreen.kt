@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.presentation_base.alert_dialog.AlertDialogComposable
+import com.example.presentation_base.ui.alert_dialog.AlertDialogComposable
 import com.example.presentation_base.ui.top_bar.TopBarScaffoldComposable
 import com.example.presentation_character_details.ui.CharacterDetailsComposable
 

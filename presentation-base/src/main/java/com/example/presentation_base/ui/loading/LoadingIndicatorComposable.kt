@@ -1,4 +1,4 @@
-package com.example.presentation_base.loading
+package com.example.presentation_base.ui.loading
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator

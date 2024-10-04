@@ -9,8 +9,9 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onParent
 import androidx.compose.ui.test.performClick
-import com.example.presentation_base.search_bar.SearchBarTestTags.PLACEHOLDER_TEST_TAG
-import com.example.presentation_base.search_bar.SearchBarTestTags.SUGGESTIONS_LIST_TEST_TAG
+import com.example.presentation_base.ui.search_bar.SearchBarComposable
+import com.example.presentation_base.ui.search_bar.SearchBarTestTags.PLACEHOLDER_TEST_TAG
+import com.example.presentation_base.ui.search_bar.SearchBarTestTags.SUGGESTIONS_LIST_TEST_TAG
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test

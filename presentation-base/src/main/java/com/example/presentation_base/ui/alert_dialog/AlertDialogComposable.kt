@@ -1,4 +1,4 @@
-package com.example.presentation_base.alert_dialog
+package com.example.presentation_base.ui.alert_dialog
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
@@ -13,11 +13,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.presentation_base.alert_dialog.AlertDialogTestTags.CONFIRM_BUTTON_TEST_TAG
-import com.example.presentation_base.alert_dialog.AlertDialogTestTags.DISMISS_BUTTON_TEST_TAG
-import com.example.presentation_base.alert_dialog.AlertDialogTestTags.ICON_TEST_TAG
-import com.example.presentation_base.alert_dialog.AlertDialogTestTags.TEXT_TEST_TAG
-import com.example.presentation_base.alert_dialog.AlertDialogTestTags.TITLE_TEST_TAG
+import com.example.presentation_base.ui.alert_dialog.AlertDialogTestTags.CONFIRM_BUTTON_TEST_TAG
+import com.example.presentation_base.ui.alert_dialog.AlertDialogTestTags.DISMISS_BUTTON_TEST_TAG
+import com.example.presentation_base.ui.alert_dialog.AlertDialogTestTags.ICON_TEST_TAG
+import com.example.presentation_base.ui.alert_dialog.AlertDialogTestTags.TEXT_TEST_TAG
+import com.example.presentation_base.ui.alert_dialog.AlertDialogTestTags.TITLE_TEST_TAG
 
 object AlertDialogTestTags {
     const val TITLE_TEST_TAG = "TitleTestTab"
