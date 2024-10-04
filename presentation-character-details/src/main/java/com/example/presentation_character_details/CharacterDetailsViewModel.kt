@@ -1,5 +1,7 @@
 package com.example.presentation_character_details
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.character.GetCharacterUseCase
@@ -16,17 +18,21 @@ class CharacterDetailsViewModel @Inject constructor(
     private val characterUseCase: GetCharacterUseCase
 ) : ViewModel() {
 
-    private val _characterDetail = MutableStateFlow(CharacterDisplay(0, "", "", "", "", false))
-    val characterDetail: StateFlow<CharacterDisplay> = _characterDetail
+    private val _characterDetail = MutableLiveData<DetailsDisplay>()
+    val characterDetail: LiveData<DetailsDisplay> = _characterDetail
 
     fun fetchCharacters(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             characterUseCase.run(Params(id)).fold(
                 onSuccess = { character ->
-                    _characterDetail.value = character.toDisplay()
+                    val display = DetailsDisplay(
+                        hasError = false,
+                        characterDisplay = character.toDisplay()
+                    )
+                    _characterDetail.postValue(display)
                 },
                 onFailure = { _ ->
-                    _characterDetail.value.copy(hasError = true)
+                    _characterDetail.postValue(DetailsDisplay(hasError = true))
                 }
             )
         }

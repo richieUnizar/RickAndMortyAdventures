@@ -57,7 +57,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.runtime.livedata)
+    implementation(libs.joda.time)
     testImplementation(libs.junit)
+    testImplementation(libs.runtime.livedata)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -93,6 +95,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":presentation-base"))
+    implementation(project(":test-utils-android"))
 }
 
 tasks.withType<Test> {

@@ -5,6 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -18,7 +19,8 @@ fun CharacterDetailsScreen(id: Int, navController: NavController) {
 
     val viewModel: CharacterDetailsViewModel = hiltViewModel()
 
-    val character by viewModel.characterDetail.collectAsState()
+    val display by viewModel.characterDetail.observeAsState()
+    val characterDisplay = display?.characterDisplay
 
     viewModel.fetchCharacters(id)
 
@@ -32,20 +34,22 @@ fun CharacterDetailsScreen(id: Int, navController: NavController) {
         },
         showBackButton = true,
     ) { paddingModifier ->
-        if (character.hasError) {
-            ShowAlertDialog { navController.popBackStack() }
-        } else {
-            CharacterDetailsComposable(
-                character = character,
-                modifier = paddingModifier
-            )
+        when {
+            display?.hasError == true -> ShowAlertDialog { navController.popBackStack() }
+            characterDisplay != null -> {
+                CharacterDetailsComposable(
+                    character = characterDisplay,
+                    modifier = paddingModifier
+                )
+            }
+
         }
     }
 
 }
 
 @Composable
-fun ShowAlertDialog(onConfirmation: () -> Unit){
+fun ShowAlertDialog(onConfirmation: () -> Unit) {
     AlertDialogComposable(
         dialogTitle = "Something went wrong",
         dialogText = "The character could not be displayed",

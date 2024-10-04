@@ -3,23 +3,20 @@ package com.example.presentation_character_details
 import com.example.common.Either
 import com.example.domain.character.GetCharacterUseCase
 import com.example.domain.character.GetCharacterUseCase.Params
-import com.example.domain.model.Character
-import com.example.domain.model.Location
-import com.example.domain.model.Origin
+import com.example.test_utils_android.InstantExecutorExtension
+import com.example.test_utils_android.getOrAwaitValue
+import com.example.test_utils_android.test_utils.createCharacter
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 
+@ExtendWith(InstantExecutorExtension::class)
 class CharacterDetailsViewModelTest {
 
     private val characterUseCase: GetCharacterUseCase = mockk()
@@ -35,21 +32,28 @@ class CharacterDetailsViewModelTest {
     fun `Given a valid character ID When fetchCharacters is called Then characterDetail should update with character data`() =
         runTest {
             val characterId = 1
-            val characterDisplay = CharacterDisplay(
-                id = characterId,
-                name = "Rick Sanchez",
-                status = "Alive",
-                species = "Human",
-                image = "image",
-                hasError = false
+            val characterDisplay = DetailsDisplay(
+                hasError = false,
+                CharacterDisplay(
+                    id = characterId,
+                    name = "Rick Sanchez",
+                    gender = "Male",
+                    status = "Alive",
+                    species = "Human",
+                    image = "image",
+                    created = "04 noviembre 2017, 00:00:00",
+                    origin = "Earth",
+                    location = "Earth",
+                )
             )
+
             val character = createCharacter()
 
             coEvery { characterUseCase.run(Params(characterId)) } returns Either.Success(character)
 
             viewModel.fetchCharacters(characterId)
 
-            val result = viewModel.characterDetail.take(1).first()
+            val result = viewModel.characterDetail.getOrAwaitValue()
 
             assertEquals(characterDisplay, result)
             assertFalse(result.hasError)
@@ -64,24 +68,8 @@ class CharacterDetailsViewModelTest {
 
             viewModel.fetchCharacters(characterId)
 
-            val result = viewModel.characterDetail.first()
+            val result: DetailsDisplay = viewModel.characterDetail.getOrAwaitValue()
+
             assertTrue(result.hasError)
         }
-
-
-    private fun createCharacter() = Character(
-        id = 1,
-        name = "Rick Sanchez",
-        status = "Alive",
-        species = "Human",
-        type = null,
-        gender = "Male",
-        origin = Origin(name = "Earth", url = "url"),
-        location = Location(name = "Earth", url = "url"),
-        image = "image",
-        episode = listOf("episode 1"),
-        url = "url",
-        created = "2017-11-04",
-        isInFavourites = false
-    )
 }
