@@ -1,31 +1,27 @@
 package com.example.presentation_character_list
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.Favourites.add.AddToFavouriteUseCase
-import com.example.domain.Favourites.add.AddToFavouriteUseCase.*
-import com.example.domain.Favourites.remove.RemoveToFavouriteUseCase
 import com.example.domain.model.Character
 import com.example.domain.model.Characters
 import com.example.domain.characters.GetCharactersUseCase
 import com.example.domain.characters.GetCharactersUseCase.Params
+import com.example.presentation_base.FavouriteManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CharacterListViewModel @Inject constructor(
     private val charactersUseCase: GetCharactersUseCase,
-    private val favouriteCharacterUseCase: AddToFavouriteUseCase,
-    private val removeToFavouriteUseCase: RemoveToFavouriteUseCase,
+    private val favouriteManager: FavouriteManager
 ) : ViewModel() {
 
-    private val _characterList =
-        MutableStateFlow(CharactersDisplay(0, emptyList(), true, false))
-    val characterList: StateFlow<CharactersDisplay> = _characterList
+    private val _characters =
+        MutableLiveData(CharactersDisplay(0, emptyList(), true, false))
+    val characters: LiveData<CharactersDisplay> = _characters
 
     private var pageToLoad = 1
     private var numberOfPages: Int? = null
@@ -37,7 +33,7 @@ class CharacterListViewModel @Inject constructor(
 
     fun loadNextPage(index: Int) {
         numberOfPages?.let {
-            val isNearEndOfList = index == _characterList.value.characterList.count() - 10
+            val isNearEndOfList = index == (_characters.value?.characterList?.count() ?: 0) - 10
             val shouldLoadNextPage = pageToLoad <= it
 
             if (isNearEndOfList && shouldLoadNextPage) {
@@ -47,10 +43,9 @@ class CharacterListViewModel @Inject constructor(
     }
 
     private fun fetchCharacters(page: Int) {
+        _characters.value = _characters.value?.copy(loading = true)
 
-        _characterList.value = _characterList.value.copy(loading = true)
-
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             charactersUseCase.run(Params(page)).fold(
                 onSuccess = { characters ->
                     successToFetchCharacters(characters)
@@ -69,10 +64,11 @@ class CharacterListViewModel @Inject constructor(
 
         val display: CharactersDisplay = characters.toDisplay()
 
-        val updatedCharacterList =
-            _characterList.value.characterList + display.characterList
+        val updatedCharacterList = _characters.value?.characterList?.let { currentList ->
+            currentList + display.characterList
+        } ?: display.characterList
 
-        _characterList.value = display.copy(
+        _characters.value = display.copy(
             characterList = updatedCharacterList,
             loading = false,
             hasError = false
@@ -80,23 +76,17 @@ class CharacterListViewModel @Inject constructor(
     }
 
     private fun errorToFetchCharacters() {
-        _characterList.value = _characterList.value.copy(
-            hasError = true
-        )
+        _characters.value = _characters.value?.copy(hasError = true)
     }
 
-    fun onHeartIconClicked(isHeartSelected: Boolean, characterDisplay: CharacterDisplay) {
-        viewModelScope.launch(Dispatchers.IO) {
+    fun onHeartIconClicked(characterDisplay: CharacterDisplay, isHeartSelected: Boolean) {
 
-            updateCharacterFavourites(characterDisplay, isHeartSelected)
+        updateCharacterFavourites(characterDisplay, isHeartSelected)
 
-            if (isHeartSelected) {
-                charactersList?.find { it.id == characterDisplay.id }?.let { safeCharacter ->
-                    favouriteCharacterUseCase.addCharacterToFavorites(Params(safeCharacter))
-                }
-            } else {
-                removeToFavouriteUseCase.removeCharacterFromFavorites(characterDisplay.id)
-            }
+        val favouriteCharacter = characterDisplay.mapToFavouriteCharacter()
+
+        viewModelScope.launch {
+            favouriteManager.handleHeartIconClick(favouriteCharacter, isHeartSelected)
         }
     }
 
@@ -104,28 +94,40 @@ class CharacterListViewModel @Inject constructor(
         characterDisplay: CharacterDisplay,
         isHeartSelected: Boolean
     ) {
-        val updatedCharacterList = _characterList.value.characterList.map { character ->
-            if (character.id == characterDisplay.id) {
-                character.copy(isInFavourites = isHeartSelected)
-            } else {
-                character
-            }
+        updateCharacterList(characterDisplay.id) { character ->
+            character.copy(isInFavourites = isHeartSelected)
         }
-
-        _characterList.value = _characterList.value.copy(
-            characterList = updatedCharacterList
-        )
     }
-
 
     fun updateCharacterList(characters: List<Character>) {
         charactersList = characters
 
-        _characterList.value = _characterList.value.copy(
+        _characters.value = _characters.value?.copy(
             numberOfCharacters = characters.count(),
             characterList = characters.toDisplay(),
             loading = false,
         )
+    }
+
+    fun heartIconDetailChanged(id: Int) {
+        updateCharacterList(id) { character ->
+            character.copy(isInFavourites = !character.isInFavourites)
+        }
+    }
+
+    private fun updateCharacterList(id: Int, update: (CharacterDisplay) -> CharacterDisplay) {
+        val updatedCharacterList = _characters.value?.characterList?.map { character ->
+            if (character.id == id) {
+                update(character)
+            } else {
+                character
+            }
+        }
+        updatedCharacterList?.let {
+            _characters.value = _characters.value?.copy(
+                characterList = updatedCharacterList
+            )
+        }
     }
 
 }

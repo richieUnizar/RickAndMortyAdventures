@@ -27,4 +27,8 @@ sealed class Either<out E, out T> {
         is Success -> onSuccess(value)
         is Error -> onFailure(error)
     }
+
 }
+
+fun <E> E.asFailure(): Either<E, Nothing> = Either.Error(this)
+fun <T> T.asSuccess(): Either<Nothing, T> = Either.Success(this)

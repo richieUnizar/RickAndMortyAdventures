@@ -1,5 +1,6 @@
 package com.example.presentation_character_list
 
+import com.example.domain.Favourites.model.FavouriteCharacter
 import com.example.domain.model.Character
 import com.example.domain.model.Characters
 import java.lang.Error
@@ -35,3 +36,14 @@ fun Character.toDisplay() = CharacterDisplay(
     image = this.image,
     isInFavourites = this.isInFavourites
 )
+
+
+fun CharacterDisplay.mapToFavouriteCharacter() = FavouriteCharacter(
+    id = this.id,
+    name = this.name,
+    status = this.status,
+    species = this.species,
+    image = this.image
+)
+
+

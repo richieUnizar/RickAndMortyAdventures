@@ -60,14 +60,16 @@ fun BottomNavigationComposable(navController: NavHostController) {
                 FavouriteCharactersScreen(navController = navController)
             }
             composable(
-                route = NavigationItem.Detail.route + "/{characterId}",
+                route = NavigationItem.Detail.route + "/{characterId}/{isFavorite}",
                 arguments = listOf(
                     navArgument(name = "characterId") { type = NavType.IntType },
+                    navArgument(name = "isFavorite") { type = NavType.BoolType }
                 )
             ) { backStackEntry ->
                 val id = backStackEntry.arguments?.getInt("characterId") ?: 1
+                val isFavorite = backStackEntry.arguments?.getBoolean("isFavorite") ?: false
 
-                CharacterDetailsScreen(id, navController)
+                CharacterDetailsScreen(id, isFavorite, navController)
             }
             composable(
                 route = NavigationItem.Search.route,

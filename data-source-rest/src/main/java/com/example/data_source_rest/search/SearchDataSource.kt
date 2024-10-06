@@ -5,6 +5,6 @@ import com.example.data_source_rest.model.CharactersDTO
 
 interface SearchDataSource {
 
-    fun getCharacterByName(name: String): Either<Throwable, CharactersDTO>
+    suspend fun getCharacterByName(name: String): Either<Throwable, CharactersDTO>
 
 }

@@ -87,6 +87,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":presentation-base"))
+    implementation(project(":test-utils-android"))
 }
 
 kapt {

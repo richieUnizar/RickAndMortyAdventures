@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -19,13 +20,13 @@ import com.example.presentation_base.ui.search_bar.SearchBarComposable
 fun SearchScreen(navController: NavController) {
     val viewModel: SearchViewModel = hiltViewModel()
 
-    val familyMembers by viewModel.familyMembers.collectAsState()
-    val characters by viewModel.characterList.collectAsState()
+    val familyMembers by viewModel.familyMembers.observeAsState()
+    val characters by viewModel.characterList.observeAsState()
     var shouldNavigateBack by rememberSaveable { mutableStateOf(false) }
 
     SearchBarComposable(
         placeholder = stringResource(R.string.search_by_name_placeholder),
-        suggestionsList = familyMembers,
+        suggestionsList = familyMembers?.let { it } ?: emptyList(),
     ) {
         shouldNavigateBack = true
         viewModel.onSearchClick(it)
@@ -37,13 +38,19 @@ fun SearchScreen(navController: NavController) {
 }
 
 @Composable
-fun HandleNavigation(navController: NavController, characters: List<Character>, shouldNavigateBack: Boolean) {
-    LaunchedEffect(characters, shouldNavigateBack) {
-        if (shouldNavigateBack && characters.isNotEmpty()) {
-            navController.previousBackStackEntry?.savedStateHandle?.set(
-                NavigationItem.Search.searchByNameListKey, characters
-            )
-            navController.popBackStack()
+fun HandleNavigation(
+    navController: NavController,
+    characters: List<Character>?,
+    shouldNavigateBack: Boolean
+) {
+    characters?.let {
+        LaunchedEffect(characters, shouldNavigateBack) {
+            if (shouldNavigateBack && characters.isNotEmpty()) {
+                navController.previousBackStackEntry?.savedStateHandle?.set(
+                    NavigationItem.Search.SEARCH_BY_NAME_LIST_KEY, characters
+                )
+                navController.popBackStack()
+            }
         }
     }
 }

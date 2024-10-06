@@ -1,8 +1,8 @@
 package com.example.domain.Favourites.add
 
-import com.example.domain.model.Character
+import com.example.domain.Favourites.model.FavouriteCharacter
 
 interface AddToFavouritesRepository {
 
-    suspend fun addCharacterToFavorites(character: Character)
+    suspend fun addCharacterToFavorites(favouriteCharacter: FavouriteCharacter)
 }

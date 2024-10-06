@@ -3,12 +3,17 @@ package com.example.presentation_character_details
 import com.example.common.Either
 import com.example.domain.character.GetCharacterUseCase
 import com.example.domain.character.GetCharacterUseCase.Params
+import com.example.presentation_base.FavouriteManager
 import com.example.test_utils_android.InstantExecutorExtension
+import com.example.test_utils_android.TestCoroutineExtension
 import com.example.test_utils_android.getOrAwaitValue
 import com.example.test_utils_android.test_utils.createCharacter
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -16,16 +21,17 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(InstantExecutorExtension::class)
+@ExtendWith(InstantExecutorExtension::class, TestCoroutineExtension::class)
 class CharacterDetailsViewModelTest {
 
     private val characterUseCase: GetCharacterUseCase = mockk()
+    private val favouriteManager: FavouriteManager = mockk()
 
     private lateinit var viewModel: CharacterDetailsViewModel
 
     @BeforeEach
     fun setUp() {
-        viewModel = CharacterDetailsViewModel(characterUseCase = characterUseCase)
+        viewModel = CharacterDetailsViewModel(characterUseCase = characterUseCase, favouriteManager)
     }
 
     @Test
@@ -41,9 +47,10 @@ class CharacterDetailsViewModelTest {
                     status = "Alive",
                     species = "Human",
                     image = "image",
-                    created = "04 noviembre 2017, 00:00:00",
+                    created = "04 noviembre 2017",
                     origin = "Earth",
                     location = "Earth",
+                    isFavorite = false,
                 )
             )
 
@@ -51,7 +58,7 @@ class CharacterDetailsViewModelTest {
 
             coEvery { characterUseCase.run(Params(characterId)) } returns Either.Success(character)
 
-            viewModel.fetchCharacters(characterId)
+            viewModel.fetchCharacters(characterId, false)
 
             val result = viewModel.characterDetail.getOrAwaitValue()
 
@@ -66,7 +73,7 @@ class CharacterDetailsViewModelTest {
 
             coEvery { characterUseCase.run(Params(characterId)) } returns Either.Error(Throwable("Invalid id"))
 
-            viewModel.fetchCharacters(characterId)
+            viewModel.fetchCharacters(characterId, false)
 
             val result: DetailsDisplay = viewModel.characterDetail.getOrAwaitValue()
 

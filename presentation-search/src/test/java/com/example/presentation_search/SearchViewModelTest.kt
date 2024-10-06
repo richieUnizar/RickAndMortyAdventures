@@ -1,22 +1,24 @@
 package com.example.presentation_search
 
 import com.example.common.Either
-import com.example.domain.model.Character
-import com.example.domain.model.Characters
-import com.example.domain.model.Info
-import com.example.domain.model.Location
-import com.example.domain.model.Origin
+import com.example.common.asSuccess
 import com.example.domain.search.GetSearchUseCase
 import com.example.domain.search.GetSearchUseCase.Params
+import com.example.test_utils_android.InstantExecutorExtension
+import com.example.test_utils_android.TestCoroutineExtension
+import com.example.test_utils_android.getOrAwaitValue
+import com.example.test_utils_android.test_utils.createCharacters
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 
-
+@ExperimentalCoroutinesApi
+@ExtendWith(InstantExecutorExtension::class, TestCoroutineExtension::class)
 class SearchViewModelTest {
 
     private val getSearchUseCase: GetSearchUseCase = mockk()
@@ -34,26 +36,25 @@ class SearchViewModelTest {
             val expectedFamilyMembers =
                 listOf("Rick Sanchez", "Morty Smith", "Beth Smith", "Jerry Smith", "Summer Smith")
 
-            val familyMembers = viewModel.familyMembers.first()
+            val familyMembers = viewModel.familyMembers.getOrAwaitValue()
 
             assertEquals(expectedFamilyMembers, familyMembers)
         }
-
 
     @Test
     fun `Given a valid name When onSearchClick is called Then characterList is updated with search results`() =
         runTest {
             val name = "Rick"
 
-            coEvery { getSearchUseCase.run(Params(name)) } returns Either.Success(
-                character
-            )
+            val characters = createCharacters()
+
+            coEvery { getSearchUseCase.run(Params(name)) } returns characters.asSuccess()
 
             viewModel.onSearchClick(name)
 
-            val characterList = viewModel.characterList.first()
+            val characterList = viewModel.characterList.getOrAwaitValue()
 
-            assertEquals(character.characterList, characterList)
+            assertEquals(characters.characterList, characterList)
         }
 
 
@@ -66,31 +67,8 @@ class SearchViewModelTest {
 
             viewModel.onSearchClick("InvalidName")
 
-            val characterList = viewModel.characterList.first()
+            val characterList = viewModel.characterList.getOrAwaitValue()
 
             assert(characterList.isEmpty())
         }
-
-
-    private val character = Characters(
-        info = Info(1, 1),
-        characterList = listOf(
-            Character(
-                id = 1,
-                name = "Rick Sanchez",
-                status = "Alive",
-                species = "Human",
-                type = "",
-                gender = "Male",
-                origin = Origin(name = "Earth (C-137)", url = "url"),
-                location = Location(name = "Earth (Replacement Dimension)", url = "url"),
-                image = "image",
-                episode = emptyList(),
-                url = "https://rickandmortyapi.com/api/character/1",
-                created = "2017-11-04T18:48:46.250Z"
-            )
-        )
-    )
-
-
 }
