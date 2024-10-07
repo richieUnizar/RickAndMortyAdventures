@@ -38,7 +38,7 @@ fun FavouriteCharactersScreen(
             FavouriteCharactersComposable(
                 characters = display.characterList,
                 onItemClick = { character ->
-                    navController.navigate(NavigationItem.Detail.route + "/${character.id}")
+                    navController.navigate(NavigationItem.Detail.route + "/${character.id}/${character.isInFavourites}")
                 },
                 onHeartIconClick = { character ->
                     viewModel.removeCharacterFromFavourites(character.id)
