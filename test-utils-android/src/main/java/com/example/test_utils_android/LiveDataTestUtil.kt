@@ -33,3 +33,35 @@ fun <T> LiveData<T>.getOrAwaitValue(
     @Suppress("UNCHECKED_CAST")
     return data as T
 }
+
+fun <T> LiveData<T>.observeNoValue(
+    time: Long = 2,
+    timeUnit: TimeUnit = TimeUnit.SECONDS
+): T? {
+    var data: T? = null
+    val latch = CountDownLatch(1)
+
+    var isCalled = false
+
+    val observer = object : Observer<T> {
+        override fun onChanged(o: T) {
+            isCalled = true
+            data = o
+            latch.countDown()
+            this@observeNoValue.removeObserver(this)
+        }
+    }
+
+    this.observeForever(observer)
+
+    if (latch.await(time, timeUnit)) {
+        if (isCalled) {
+            this.removeObserver(observer)
+            throw AssertionError("LiveData value was set, but it was not expected.")
+        }
+    }
+
+    this.removeObserver(observer)
+    return data
+}
+
