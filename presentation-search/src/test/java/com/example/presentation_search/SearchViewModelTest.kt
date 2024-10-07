@@ -2,6 +2,8 @@ package com.example.presentation_search
 
 import com.example.common.Either
 import com.example.common.asSuccess
+import com.example.domain.model.Characters
+import com.example.domain.model.Info
 import com.example.domain.search.GetSearchUseCase
 import com.example.domain.search.GetSearchUseCase.Params
 import com.example.test_utils_android.InstantExecutorExtension
@@ -12,10 +14,13 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import java.net.URLEncoder
 
 @ExperimentalCoroutinesApi
 @ExtendWith(InstantExecutorExtension::class, TestCoroutineExtension::class)
@@ -47,6 +52,7 @@ class SearchViewModelTest {
             val name = "Rick"
 
             val characters = createCharacters()
+            val expectedCharacters = createEncodeCharacters(characters)
 
             coEvery { getSearchUseCase.run(Params(name)) } returns characters.asSuccess()
 
@@ -54,14 +60,17 @@ class SearchViewModelTest {
 
             val characterList = viewModel.characterList.getOrAwaitValue()
 
-            assertEquals(characters.characterList, characterList)
+            assertEquals(expectedCharacters, characterList)
         }
 
 
     @Test
-    fun `Given an invalid name When onSearchClick is called Then characterList is empty`() =
+    fun `Given an invalid name When onSearchClick is called Then characters is empty`() =
         runTest {
             val error = Throwable("Character not found")
+
+            val characters = Characters(Info(0,0), emptyList())
+            val expectedCharacters = createEncodeCharacters(characters)
 
             coEvery { getSearchUseCase.run(Params("InvalidName")) } returns Either.Error(error)
 
@@ -69,6 +78,11 @@ class SearchViewModelTest {
 
             val characterList = viewModel.characterList.getOrAwaitValue()
 
-            assert(characterList.isEmpty())
+            assertEquals(expectedCharacters, characterList)
         }
+
+    fun createEncodeCharacters(characters: Characters): String{
+        val encodeCharacters: String = Json.encodeToString(characters)
+        return URLEncoder.encode(encodeCharacters, "UTF-8")
+    }
 }

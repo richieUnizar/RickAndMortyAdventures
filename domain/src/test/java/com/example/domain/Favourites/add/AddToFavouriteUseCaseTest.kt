@@ -1,5 +1,6 @@
 package com.example.domain.Favourites.add
 
+import com.example.domain.Favourites.model.FavouriteCharacter
 import com.example.domain.model.Character
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -21,7 +22,7 @@ class AddToFavouriteUseCaseTest() {
     @Test
     fun `Given a character When addCharacterToFavorites is called Then repository add character to favourites`() =
         runTest {
-            val character = mockk<Character>()
+            val character = mockk<FavouriteCharacter>()
             val params = AddToFavouriteUseCase.Params(character)
 
             coEvery { repository.addCharacterToFavorites(any()) } just Runs

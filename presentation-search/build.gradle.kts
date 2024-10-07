@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.android.jupiter)
     id("kotlin-kapt")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22" apply false
 }
 
 android {
@@ -64,6 +65,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.serialization.json)
 
     // Hilt
     implementation(libs.hilt.android)

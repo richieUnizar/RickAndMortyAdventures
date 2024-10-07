@@ -11,14 +11,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.example.domain.model.Character
-import com.example.domain.model.Characters
 import com.example.presentation_base.navigation.NavigationItem
 import com.example.presentation_base.navigation.NavigationItem.Detail.STATUS_OF_FAVOURITE_DETAIL_KEY
 import com.example.presentation_base.navigation.NavigationItem.Search.SEARCH_BY_NAME_LIST_KEY
-import com.example.presentation_base.navigation.NavigationItem.Splash.SPLASH_KEY
 import com.example.presentation_base.navigation.observeLiveData
-import com.example.presentation_base.navigation.observeLiveData2
 import com.example.presentation_base.ui.error_screen.ErrorMessageComposable
 import com.example.presentation_base.ui.loading.LoadingIndicatorComposable
 import com.example.presentation_base.ui.top_bar.TopBarScaffoldComposable
@@ -33,20 +29,17 @@ fun CharacterListScreen(
 
     val display by viewModel.characters.observeAsState()
 
-    val charactersBySplash =
-        observeLiveData2<List<Characters>>(navController, SPLASH_KEY)
-
     val filterByNameList =
-        observeLiveData<List<Character>>(navController, SEARCH_BY_NAME_LIST_KEY)
+        observeLiveData<String>(navController, SEARCH_BY_NAME_LIST_KEY)
 
     val favouriteDetailsChanged =
         observeLiveData<Int>(navController, STATUS_OF_FAVOURITE_DETAIL_KEY)
 
     val listState: LazyListState = rememberLazyListState()
 
-    LaunchedEffect(charactersBySplash, filterByNameList, favouriteDetailsChanged) {
+    LaunchedEffect(filterByNameList, favouriteDetailsChanged) {
         filterByNameList.value?.let { characters ->
-            viewModel.updateCharacterList(characters)
+            viewModel.intiPage(characters)
         } ?: viewModel.intiPage(charactersJson)
 
         favouriteDetailsChanged.value?.let { id ->

@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.model.Character
+import com.example.domain.model.Characters
 import com.example.presentation_base.back_button.HandleBackButton
 import com.example.presentation_base.navigation.NavigationItem
 import com.example.presentation_base.ui.search_bar.SearchBarComposable
@@ -40,12 +41,12 @@ fun SearchScreen(navController: NavController) {
 @Composable
 fun HandleNavigation(
     navController: NavController,
-    characters: List<Character>?,
+    characters: String?,
     shouldNavigateBack: Boolean
 ) {
     characters?.let {
         LaunchedEffect(characters, shouldNavigateBack) {
-            if (shouldNavigateBack && characters.isNotEmpty()) {
+            if (shouldNavigateBack) {
                 navController.previousBackStackEntry?.savedStateHandle?.set(
                     NavigationItem.Search.SEARCH_BY_NAME_LIST_KEY, characters
                 )

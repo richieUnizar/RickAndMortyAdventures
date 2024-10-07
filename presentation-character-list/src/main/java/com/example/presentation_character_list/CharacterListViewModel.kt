@@ -108,16 +108,6 @@ class CharacterListViewModel @Inject constructor(
         }
     }
 
-    fun updateCharacterList(characters: List<Character>) {
-        charactersList = characters
-
-        _characters.value = _characters.value?.copy(
-            numberOfCharacters = characters.count(),
-            characterList = characters.toDisplay(),
-            loading = false,
-        )
-    }
-
     fun heartIconDetailChanged(id: Int) {
         updateCharacterList(id) { character ->
             character.copy(isInFavourites = !character.isInFavourites)

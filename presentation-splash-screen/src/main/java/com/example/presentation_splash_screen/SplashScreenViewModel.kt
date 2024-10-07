@@ -41,8 +41,8 @@ class SplashScreenViewModel @Inject constructor(
                 onSuccess = { characters ->
                     _loading.value = false
                     val encodeCharacters: String = Json.encodeToString(characters)
-                    val encodedCharacters1 = URLEncoder.encode(encodeCharacters, "UTF-8")
-                    _characters.value = encodedCharacters1
+                    val urlEncodeCharacters = URLEncoder.encode(encodeCharacters, "UTF-8")
+                    _characters.value = urlEncodeCharacters
                 },
                 onFailure = { _ ->
                     _loading.value = false

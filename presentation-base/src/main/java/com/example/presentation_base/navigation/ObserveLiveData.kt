@@ -10,7 +10,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 
-
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun <T> observeLiveData(navController: NavController, key: String): State<T?> {
@@ -19,16 +18,4 @@ fun <T> observeLiveData(navController: NavController, key: String): State<T?> {
         ?.getLiveData<T>(key)
         ?.observeAsState()
         ?: mutableStateOf(null)
-}
-
-fun <T> observeLiveData2(navController: NavController, key: String): LiveData<T> {
-    val liveData = navController.currentBackStackEntry?.savedStateHandle?.getLiveData<T>(key)
-    if (liveData != null) {
-        Log.d("observeLiveData", "LiveData encontrado para la clave: $key")
-    } else {
-        Log.w("observeLiveData", "No LiveData encontrado para la clave: $key")
-    }
-    return liveData ?: MutableLiveData<T>().also {
-        Log.w("observeLiveData", "No LiveData encontrado para la clave: $key")
-    }
 }
