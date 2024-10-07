@@ -11,6 +11,9 @@ import com.example.domain.characters.GetCharactersUseCase.Params
 import com.example.presentation_base.FavouriteManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
+import java.net.URLDecoder
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,8 +30,14 @@ class CharacterListViewModel @Inject constructor(
     private var numberOfPages: Int? = null
     private var charactersList: List<Character>? = null
 
-    init {
-        fetchCharacters(pageToLoad)
+    fun intiPage(charactersJson: String?) {
+        if (charactersJson != null) {
+            val decodedCharactersJson = URLDecoder.decode(charactersJson, "UTF-8")
+            val characters = Json.decodeFromString<Characters>(decodedCharactersJson)
+            _characters.value = characters.toDisplay()
+        } else {
+            fetchCharacters(pageToLoad)
+        }
     }
 
     fun loadNextPage(index: Int) {

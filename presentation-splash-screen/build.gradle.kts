@@ -5,11 +5,13 @@ plugins {
     alias(libs.plugins.android.jupiter)
     id("kotlin-kapt")
     id("kotlin-parcelize")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.0" apply false
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22" apply false
 }
 
+apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
+
 android {
-    namespace = "com.example.presentation_favourite_characters"
+    namespace = "com.example.presentation_splash_screen"
     compileSdk = 34
 
     defaultConfig {
@@ -51,16 +53,24 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.material)
     implementation(libs.androidx.material3)
     implementation(libs.runtime.livedata)
+    implementation(libs.joda.time)
     implementation(libs.serialization.json)
+    testImplementation(libs.junit)
+    testImplementation(libs.runtime.livedata)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
     // Hilt
     implementation(libs.hilt.android)
@@ -91,6 +101,10 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":presentation-base"))
     implementation(project(":test-utils-android"))
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 kapt {

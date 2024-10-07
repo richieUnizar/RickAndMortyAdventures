@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt.android)
     id("kotlin-kapt")
+    id("kotlin-parcelize")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.0" apply false
 }
 
 android {
@@ -73,6 +75,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.runtime.livedata)
+    implementation(libs.serialization.json)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -103,6 +106,7 @@ dependencies {
     implementation(project(":presentation-character-details"))
     implementation(project(":presentation-favourite-characters"))
     implementation(project(":presentation-search"))
+    implementation(project(":presentation-splash-screen"))
 }
 
 kapt {

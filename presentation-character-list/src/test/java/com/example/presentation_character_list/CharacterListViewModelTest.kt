@@ -1,19 +1,13 @@
 package com.example.presentation_character_list
 
-import com.example.common.Either
 import com.example.common.asSuccess
-import com.example.domain.model.Character
-import com.example.domain.model.Characters
 import com.example.domain.characters.GetCharactersUseCase
-import com.example.domain.characters.GetCharactersUseCase.*
-import com.example.domain.model.Info
-import com.example.domain.model.Location
-import com.example.domain.model.Origin
+import com.example.domain.characters.GetCharactersUseCase.Params
+import com.example.domain.model.Characters
 import com.example.presentation_base.FavouriteManager
 import com.example.test_utils_android.InstantExecutorExtension
 import com.example.test_utils_android.TestCoroutineExtension
 import com.example.test_utils_android.getOrAwaitValue
-import com.example.test_utils_android.test_utils.createCharacter
 import com.example.test_utils_android.test_utils.createCharacters
 import com.example.test_utils_android.test_utils.generateCharacter
 import io.mockk.Runs
@@ -22,7 +16,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.just
 import io.mockk.mockk
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -41,6 +34,12 @@ class CharacterListViewModelTest {
 
     private lateinit var viewModel: CharacterListViewModel
 
+    @BeforeEach
+    fun setup(){
+        viewModel = CharacterListViewModel(charactersUseCase, favouriteManager)
+
+    }
+
     @AfterEach
     fun tearDown() {
         clearAllMocks()
@@ -49,12 +48,11 @@ class CharacterListViewModelTest {
     @Test
     fun `Given ViewModel initialized When view model is initialized is called Then characterList is updated`() =
         runTest {
-
             val characters: Characters = createCharacters()
 
             coEvery { charactersUseCase.run(any()) } returns characters.asSuccess()
 
-            viewModel = CharacterListViewModel(charactersUseCase, favouriteManager)
+            viewModel.intiPage(null)
 
             val charactersDisplayState = viewModel.characters.getOrAwaitValue()
 
@@ -72,7 +70,7 @@ class CharacterListViewModelTest {
 
             coEvery { charactersUseCase.run(any()) } returns characters.asSuccess()
 
-            viewModel = CharacterListViewModel(charactersUseCase, favouriteManager)
+            viewModel.intiPage(null)
 
             viewModel.loadNextPage(10)
 
@@ -96,7 +94,8 @@ class CharacterListViewModelTest {
                 )
             } just Runs
 
-            viewModel = CharacterListViewModel(charactersUseCase, favouriteManager)
+            viewModel.intiPage(null)
+
             viewModel.onHeartIconClicked(characterDisplay, isHeartSelected = true)
 
             val charactersDisplayState = viewModel.characters.getOrAwaitValue()
@@ -118,7 +117,8 @@ class CharacterListViewModelTest {
                 )
             } just Runs
 
-            viewModel = CharacterListViewModel(charactersUseCase, favouriteManager)
+            viewModel.intiPage(null)
+
             viewModel.onHeartIconClicked(characterDisplay, isHeartSelected = false)
 
             val charactersDisplayState = viewModel.characters.getOrAwaitValue()

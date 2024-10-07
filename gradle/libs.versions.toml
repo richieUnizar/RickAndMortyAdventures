@@ -11,6 +11,7 @@ composeBom = "2023.08.00"
 jetbrainsKotlinJvm = "1.9.0"
 retrofit = "2.9.0"
 gson = "2.9.0"
+serialization-json = "1.6.0"
 hilt = "2.52"
 hiltNavigation = "1.2.0"
 coil = "2.6.0"
@@ -61,6 +62,7 @@ hilt-android-gradle = { group = "com.google.dagger", name = "hilt-android-gradle
 
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit"}
 gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "gson" }
+serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization-json" }
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
@@ -82,3 +84,5 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrai
 android-library = { id = "com.android.library", version.ref = "agp" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 android-jupiter = { id = "de.mannodermaus.android-junit5", version.ref = "jupiter-plugin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version = "1.8.0" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "1.8.0" }

@@ -2,6 +2,7 @@ plugins {
     id("java-library")
     id("kotlin-kapt")
     alias(libs.plugins.jetbrains.kotlin.jvm)
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
 }
 
 java {
@@ -10,6 +11,7 @@ java {
 }
 dependencies {
     implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.serialization.json)
 
     // Hilt
     implementation(libs.hilt.core)

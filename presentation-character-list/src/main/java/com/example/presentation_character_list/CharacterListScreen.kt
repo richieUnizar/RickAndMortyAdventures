@@ -12,19 +12,29 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.domain.model.Character
-import com.example.presentation_base.ui.loading.LoadingIndicatorComposable
+import com.example.domain.model.Characters
 import com.example.presentation_base.navigation.NavigationItem
 import com.example.presentation_base.navigation.NavigationItem.Detail.STATUS_OF_FAVOURITE_DETAIL_KEY
 import com.example.presentation_base.navigation.NavigationItem.Search.SEARCH_BY_NAME_LIST_KEY
+import com.example.presentation_base.navigation.NavigationItem.Splash.SPLASH_KEY
 import com.example.presentation_base.navigation.observeLiveData
+import com.example.presentation_base.navigation.observeLiveData2
 import com.example.presentation_base.ui.error_screen.ErrorMessageComposable
+import com.example.presentation_base.ui.loading.LoadingIndicatorComposable
 import com.example.presentation_base.ui.top_bar.TopBarScaffoldComposable
 import com.example.presentation_character_list.ui.CharactersComposable
 
 @Composable
-fun CharacterListScreen(viewModel: CharacterListViewModel, navController: NavController) {
+fun CharacterListScreen(
+    viewModel: CharacterListViewModel,
+    navController: NavController,
+    charactersJson: String?
+) {
 
     val display by viewModel.characters.observeAsState()
+
+    val charactersBySplash =
+        observeLiveData2<List<Characters>>(navController, SPLASH_KEY)
 
     val filterByNameList =
         observeLiveData<List<Character>>(navController, SEARCH_BY_NAME_LIST_KEY)
@@ -34,7 +44,10 @@ fun CharacterListScreen(viewModel: CharacterListViewModel, navController: NavCon
 
     val listState: LazyListState = rememberLazyListState()
 
-    LaunchedEffect(filterByNameList, favouriteDetailsChanged) {
+    LaunchedEffect(charactersBySplash, filterByNameList, favouriteDetailsChanged) {
+
+        viewModel.intiPage(charactersJson)
+
         filterByNameList.value?.let { characters ->
             viewModel.updateCharacterList(characters)
         }
