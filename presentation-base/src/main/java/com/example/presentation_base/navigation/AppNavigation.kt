@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.ui.graphics.vector.ImageVector
 
 enum class Screen {
     SPLASH,
@@ -23,3 +24,15 @@ sealed class NavigationItem(val route: String) {
         const val SEARCH_BY_NAME_LIST_KEY = "searchByNameList"
     }
 }
+
+val homeTab = TabBarItem("Home", Icons.Filled.Home, Icons.Outlined.Home)
+val favourites = TabBarItem("Favourites", Icons.Filled.Favorite, Icons.Outlined.FavoriteBorder)
+val tabBarItems = listOf(homeTab, favourites)
+
+
+data class TabBarItem(
+    val title: String,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector,
+    val badgeAmount: Int? = null
+)

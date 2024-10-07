@@ -27,6 +27,7 @@ import com.example.domain.model.Characters
 import com.example.domain.model.Info
 import com.example.presentation_base.back_button.HandleBackButton
 import com.example.presentation_base.navigation.NavigationItem
+import com.example.presentation_base.navigation.homeTab
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.net.URLEncoder
@@ -42,7 +43,7 @@ fun SplashScreen(navController: NavHostController) {
     characters?.let { characterState ->
         if (loading == false && characterState != null) {
             LaunchedEffect(characterState) {
-                navController.navigate("Home/$characterState") {
+                navController.navigate(homeTab.title + "/$characterState") {
                     popUpTo(NavigationItem.Splash.route) { inclusive = true }
                 }
             }

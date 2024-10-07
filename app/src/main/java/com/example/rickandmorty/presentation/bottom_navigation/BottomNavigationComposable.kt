@@ -21,8 +21,11 @@ import androidx.navigation.navArgument
 import com.example.domain.model.Characters
 import com.example.presentation_base.navigation.NavigationItem
 import com.example.presentation_base.navigation.NavigationItem.Splash.SPLASH_KEY
+import com.example.presentation_base.navigation.favourites
+import com.example.presentation_base.navigation.homeTab
 import com.example.presentation_base.navigation.observeLiveData
 import com.example.presentation_base.navigation.observeLiveData2
+import com.example.presentation_base.navigation.tabBarItems
 import com.example.presentation_character_details.CharacterDetailsScreen
 import com.example.presentation_character_list.CharacterListScreen
 import com.example.presentation_character_list.CharacterListViewModel
@@ -33,10 +36,6 @@ import com.example.presentation_splash_screen.SplashScreen
 
 @Composable
 fun BottomNavigationComposable(navController: NavHostController) {
-    val homeTab = TabBarItem("Home", Icons.Filled.Home, Icons.Outlined.Home)
-    val favourites = TabBarItem("Favourites", Icons.Filled.Favorite, Icons.Outlined.FavoriteBorder)
-    val tabBarItems = listOf(homeTab, favourites)
-
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination?.route
 
@@ -54,13 +53,16 @@ fun BottomNavigationComposable(navController: NavHostController) {
             modifier = Modifier.fillMaxWidth()
         ) {
             composable(NavigationItem.Splash.route) {
-
                 SplashScreen(navController = navController)
             }
             composable(
-                route = "${homeTab.title}/{charactersJson}",
+                route = "${homeTab.title}/{charactersJson}?",
                 arguments = listOf(
-                    navArgument("charactersJson") { type = NavType.StringType }
+                    navArgument("charactersJson") {
+                        type = NavType.StringType
+                        nullable = true
+                        defaultValue = null
+                    }
                 )
             ) { backStackEntry ->
                 val charactersJson = backStackEntry.arguments?.getString("charactersJson")
@@ -69,6 +71,14 @@ fun BottomNavigationComposable(navController: NavHostController) {
                     viewModel = characterListViewModel,
                     navController = navController,
                     charactersJson = charactersJson
+                )
+            }
+            composable(homeTab.title) {
+                val characterListViewModel: CharacterListViewModel = hiltViewModel()
+                CharacterListScreen(
+                    viewModel = characterListViewModel,
+                    navController = navController,
+                    charactersJson = null
                 )
             }
             composable(favourites.title) {
