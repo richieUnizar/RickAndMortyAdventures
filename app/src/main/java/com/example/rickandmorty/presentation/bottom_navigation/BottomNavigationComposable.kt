@@ -55,6 +55,14 @@ fun BottomNavigationComposable(navController: NavHostController) {
             composable(NavigationItem.Splash.route) {
                 SplashScreen(navController = navController)
             }
+            composable(homeTab.title) {
+                val characterListViewModel: CharacterListViewModel = hiltViewModel()
+                CharacterListScreen(
+                    viewModel = characterListViewModel,
+                    navController = navController,
+                    charactersJson = null
+                )
+            }
             composable(
                 route = "${homeTab.title}/{charactersJson}?",
                 arguments = listOf(
@@ -71,14 +79,6 @@ fun BottomNavigationComposable(navController: NavHostController) {
                     viewModel = characterListViewModel,
                     navController = navController,
                     charactersJson = charactersJson
-                )
-            }
-            composable(homeTab.title) {
-                val characterListViewModel: CharacterListViewModel = hiltViewModel()
-                CharacterListScreen(
-                    viewModel = characterListViewModel,
-                    navController = navController,
-                    charactersJson = null
                 )
             }
             composable(favourites.title) {

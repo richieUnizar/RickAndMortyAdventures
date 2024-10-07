@@ -45,12 +45,10 @@ fun CharacterListScreen(
     val listState: LazyListState = rememberLazyListState()
 
     LaunchedEffect(charactersBySplash, filterByNameList, favouriteDetailsChanged) {
-
-        viewModel.intiPage(charactersJson)
-
         filterByNameList.value?.let { characters ->
             viewModel.updateCharacterList(characters)
-        }
+        } ?: viewModel.intiPage(charactersJson)
+
         favouriteDetailsChanged.value?.let { id ->
             viewModel.heartIconDetailChanged(id)
         }
