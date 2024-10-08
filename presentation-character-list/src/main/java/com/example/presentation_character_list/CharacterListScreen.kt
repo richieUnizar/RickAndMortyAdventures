@@ -1,5 +1,7 @@
 package com.example.presentation_character_list
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -9,7 +11,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.presentation_base.navigation.NavigationItem
 import com.example.presentation_base.navigation.NavigationItem.Detail.STATUS_OF_FAVOURITE_DETAIL_KEY
@@ -19,6 +23,7 @@ import com.example.presentation_base.ui.error_screen.ErrorMessageComposable
 import com.example.presentation_base.ui.loading.LoadingIndicatorComposable
 import com.example.presentation_base.ui.top_bar.TopBarScaffoldComposable
 import com.example.presentation_character_list.ui.CharactersComposable
+import com.example.presentation_favourite_characters.R
 
 @Composable
 fun CharacterListScreen(
@@ -74,7 +79,7 @@ fun CharacterListContent(
         navController = navController,
         titleContent = {
             Text(
-                text = "Characters (${display.numberOfCharacters})",
+                text = stringResource(R.string.characters_screen_title) + " (${display.numberOfCharacters})",
                 modifier = Modifier.fillMaxWidth()
             )
         },
